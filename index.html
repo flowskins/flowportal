@@ -35,10 +35,17 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .dune-mid::after{content:'';position:absolute;right:-5%;width:45%;height:100px;border-radius:50%;background:rgba(196,169,125,.02)}
 
 /* ═══ SERVICE BAR ═══ */
-.service-bar{position:fixed;top:0;left:0;right:0;z-index:1001;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px 30px;background:rgba(20,17,13,.95);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.service-bar{position:fixed;top:0;left:0;right:0;z-index:1001;display:flex;flex-direction:column;align-items:center;padding:10px 16px 8px;background:rgba(20,17,13,.95);border-bottom:1px solid var(--border)}
 .service-bar-wrap{position:relative;display:flex;align-items:center;justify-content:center;gap:8px}
-#veinCanvas{position:absolute;top:0;left:-40px;width:calc(100% + 80px);height:60px;pointer-events:none;z-index:0}
+#veinCanvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
 .service-pill{padding:5px 14px;border-radius:7px;text-decoration:none;font-weight:600;font-size:11px;transition:all .3s;display:flex;align-items:center;gap:5px;border:1px solid transparent;position:relative;z-index:2}
+.eco-hub{
+  margin-top:2px;padding:4px 16px;border-radius:100px;
+  font-size:9px;font-weight:700;letter-spacing:.08em;
+  font-family:'Space Mono',monospace;color:var(--sand);
+  background:rgba(196,169,125,.06);border:1px solid rgba(196,169,125,.12);
+  position:relative;z-index:2;
+}
 .service-pill:hover{transform:translateY(-1px)}
 .pill-price{color:var(--green);background:rgba(34,197,94,.05)}.pill-price:hover{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.15)}
 .pill-mid{color:var(--purple-l);background:rgba(139,92,246,.05)}.pill-mid:hover{background:rgba(139,92,246,.12);border-color:rgba(139,92,246,.15)}
@@ -47,7 +54,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .pill-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
 
 /* ═══ NAVBAR ═══ */
-.navbar{position:fixed;top:50px;left:0;right:0;z-index:1000;padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;background:rgba(20,17,13,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.navbar{position:fixed;top:56px;left:0;right:0;z-index:1000;padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;background:rgba(20,17,13,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
 .nav-left{display:flex;align-items:center;gap:14px}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 .nav-logo-icon{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--sand),var(--gold));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:var(--bg);box-shadow:0 0 20px rgba(212,166,72,.2)}
@@ -60,7 +67,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
 /* ═══ HERO ═══ */
-.hero{padding:140px 32px 50px;position:relative;overflow:hidden;text-align:center}
+.hero{padding:148px 32px 50px;position:relative;overflow:hidden;text-align:center}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:300px;background:linear-gradient(180deg,rgba(196,169,125,.06) 0%,transparent 100%);pointer-events:none}
 .hero-content{position:relative;z-index:3;max-width:650px;margin:0 auto}
 .hero-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:100px;background:rgba(196,169,125,.08);border:1px solid rgba(196,169,125,.15);font-size:10px;font-weight:700;color:var(--sand);margin-bottom:24px;letter-spacing:.06em;text-transform:uppercase;font-family:'Space Mono',monospace}
@@ -146,7 +153,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--sand),var(--gold));border-radius:3px}
 
 @media(max-width:768px){
-  .navbar{padding:0 16px;height:48px;top:44px}
+  .navbar{padding:0 16px;height:48px;top:50px}
   .service-bar{gap:2px;padding:6px 6px 24px}.service-pill{font-size:9px;padding:3px 9px}
   .hero{padding:100px 16px 36px}.content{padding:24px 16px}
   .news-hero-img,.modal-img{height:220px}
@@ -178,13 +185,14 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 
 <!-- SERVICE BAR WITH VEINS -->
 <div class="service-bar" id="serviceBar">
+  <canvas id="veinCanvas"></canvas>
   <div class="service-bar-wrap" id="serviceWrap">
-    <canvas id="veinCanvas"></canvas>
     <a href="https://price.flowskins.com.br" class="service-pill pill-price" id="pill-0"><div class="pill-dot" style="background:#22C55E"></div>FlowPrice</a>
     <a href="https://mid.flowskins.com.br" class="service-pill pill-mid" id="pill-1"><div class="pill-dot" style="background:#A78BFA"></div>FlowMid</a>
     <a href="https://flowskins.com.br" class="service-pill pill-gestor" id="pill-2"><div class="pill-dot" style="background:#00D4AA"></div>Gestor</a>
     <a href="#" class="service-pill pill-store" id="pill-3"><div class="pill-dot" style="background:#F59E0B"></div>Store</a>
   </div>
+  <div class="eco-hub" id="ecoHub">ECOSSISTEMA FLOW</div>
 </div>
 
 <!-- NAVBAR -->
@@ -199,7 +207,6 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 <!-- HERO -->
 <section class="hero">
   <div class="hero-content">
-    <div class="hero-tag">Ecossistema Flow</div>
     <h1>O portal de notícias do <em>Counter-Strike 2</em></h1>
     <p>Atualizações, patches, torneios e novidades — direto da Valve, ao vivo.</p>
   </div>
@@ -246,43 +253,47 @@ const vx=vc.getContext('2d');
 let tendrils=[];
 
 function setupVeins(){
-  const wrap=document.getElementById('serviceWrap');
-  const pills=wrap.querySelectorAll('.service-pill');
-  const rect=wrap.getBoundingClientRect();
-  const w=rect.width+80,h=60;
+  const bar=document.getElementById('serviceBar');
+  const hub=document.getElementById('ecoHub');
+  const pills=bar.querySelectorAll('.service-pill');
+  const barRect=bar.getBoundingClientRect();
+  const hubRect=hub.getBoundingClientRect();
+
+  const w=barRect.width,h=barRect.height;
   vc.width=w*2;vc.height=h*2;
   vc.style.width=w+'px';vc.style.height=h+'px';
   vx.scale(2,2);
   tendrils=[];
-  const hubX=w/2,hubY=h-6;
+
+  // Hub target = center top of eco-hub badge
+  const hubX=hubRect.left-barRect.left+hubRect.width/2;
+  const hubY=hubRect.top-barRect.top;
 
   pills.forEach((pill,i)=>{
     const pr=pill.getBoundingClientRect();
-    const px=pr.left-rect.left+pr.width/2+40;
-    const py=pr.top-rect.top+pr.height+2;
-    // Main tendril — asymmetric offsets
+    const px=pr.left-barRect.left+pr.width/2;
+    const py=pr.top-barRect.top+pr.height;
     const offX=[(Math.random()-.5)*30,-15+Math.random()*10,20+Math.random()*15,(Math.random()-.5)*25][i];
-    const offY=[8+Math.random()*6,12+Math.random()*4,6+Math.random()*8,10+Math.random()*5][i];
+    const offY=[6+Math.random()*4,8+Math.random()*3,5+Math.random()*5,7+Math.random()*4][i];
     tendrils.push({
       sx:px,sy:py,
       c1x:px+offX,c1y:py+offY,
-      c2x:hubX+(px-hubX)*.3+(Math.random()-.5)*20,c2y:hubY-10-Math.random()*8,
+      c2x:hubX+(px-hubX)*.25+(Math.random()-.5)*15,c2y:hubY-6-Math.random()*4,
       ex:hubX,ey:hubY,
       phase:Math.random()*Math.PI*2,
       speed:.008+Math.random()*.006,
       thickness:1+Math.random()*.8
     });
-    // Secondary thinner branch — organic split
     if(Math.random()>.3){
       const branchT=.3+Math.random()*.3;
       const midX=px+(hubX-px)*branchT;
-      const midY=py+(hubY-py)*branchT+offY*.5;
-      const bEndX=midX+(Math.random()-.5)*40;
-      const bEndY=hubY-2+Math.random()*4;
+      const midY=py+(hubY-py)*branchT+offY*.4;
+      const bEndX=hubX+(midX-hubX)*.25+(Math.random()-.5)*10;
+      const bEndY=hubY;
       tendrils.push({
         sx:midX,sy:midY,
-        c1x:midX+(bEndX-midX)*.4+(Math.random()-.5)*10,c1y:midY+4+Math.random()*4,
-        c2x:bEndX-(bEndX-midX)*.2,c2y:bEndY-4,
+        c1x:midX+(bEndX-midX)*.4+(Math.random()-.5)*8,c1y:midY+3+Math.random()*3,
+        c2x:bEndX-(bEndX-midX)*.2,c2y:bEndY-2,
         ex:bEndX,ey:bEndY,
         phase:Math.random()*Math.PI*2,
         speed:.005+Math.random()*.005,
@@ -302,40 +313,28 @@ function drawVeins(){
   tendrils.forEach(t=>{
     const pulse=.3+.4*Math.sin(frame*t.speed+t.phase);
     const pulse2=.2+.3*Math.sin(frame*t.speed*1.3+t.phase+1);
-
-    // Draw flowing energy along path using gradient
     const steps=40;
     for(let s=0;s<steps;s++){
       const frac=s/steps;
       const u=1-frac;
       const x=u*u*u*t.sx+3*u*u*frac*t.c1x+3*u*frac*frac*t.c2x+frac*frac*frac*t.ex;
       const y=u*u*u*t.sy+3*u*u*frac*t.c1y+3*u*frac*frac*t.c2y+frac*frac*frac*t.ey;
-
-      // Flowing energy wave — moves along the path over time
       const wave=Math.sin(frac*8-frame*.02+t.phase);
       const wave2=Math.sin(frac*5-frame*.015+t.phase+2);
       const energy=Math.max(0,wave*.5+.5)*pulse;
       const energy2=Math.max(0,wave2*.5+.5)*pulse2;
-
-      // Outer soft glow
       const glowSize=t.thickness*3+energy*4;
       vx.beginPath();vx.arc(x,y,glowSize,0,Math.PI*2);
       vx.fillStyle=`rgba(180,155,110,${.02*energy})`;vx.fill();
-
-      // Inner warm glow
       const innerSize=t.thickness*1.5+energy2*2;
       vx.beginPath();vx.arc(x,y,innerSize,0,Math.PI*2);
       vx.fillStyle=`rgba(196,169,125,${.04+.06*energy})`;vx.fill();
-
-      // Core bright point — only where energy peaks
       if(energy>.3){
         const coreSize=t.thickness*.6+energy*.8;
         vx.beginPath();vx.arc(x,y,coreSize,0,Math.PI*2);
         vx.fillStyle=`rgba(212,188,148,${.08+.12*energy})`;vx.fill();
       }
     }
-
-    // Thin structural line
     vx.beginPath();
     vx.moveTo(t.sx,t.sy);
     vx.bezierCurveTo(t.c1x,t.c1y,t.c2x,t.c2y,t.ex,t.ey);
@@ -343,18 +342,6 @@ function drawVeins(){
     vx.lineWidth=t.thickness*.7;
     vx.lineCap='round';vx.stroke();
   });
-
-  // Hub — subtle warm glow at convergence
-  if(tendrils.length>0){
-    const hx=tendrils[0].ex,hy=tendrils[0].ey;
-    const hPulse=.4+.4*Math.sin(frame*.012);
-    vx.beginPath();vx.arc(hx,hy,12,0,Math.PI*2);
-    vx.fillStyle=`rgba(196,169,125,${.03*hPulse})`;vx.fill();
-    vx.beginPath();vx.arc(hx,hy,5,0,Math.PI*2);
-    vx.fillStyle=`rgba(212,188,148,${.06*hPulse})`;vx.fill();
-    vx.beginPath();vx.arc(hx,hy,2,0,Math.PI*2);
-    vx.fillStyle=`rgba(232,213,176,${.1*hPulse})`;vx.fill();
-  }
 
   requestAnimationFrame(drawVeins);
 }
@@ -494,7 +481,7 @@ setInterval(loadNews,300000);
 
 // ═══ SCROLL PROGRESS ═══
 const bar=document.createElement('div');
-bar.style.cssText='position:fixed;top:50px;left:0;height:2px;z-index:10001;background:linear-gradient(90deg,#C4A97D,#D4A648);transition:width .1s;width:0';
+bar.style.cssText='position:fixed;top:56px;left:0;height:2px;z-index:10001;background:linear-gradient(90deg,#C4A97D,#D4A648);transition:width .1s;width:0';
 document.body.appendChild(bar);
 addEventListener('scroll',()=>{bar.style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%'});
 </script>
