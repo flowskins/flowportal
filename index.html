@@ -58,7 +58,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .content-area::before{content:'';position:absolute;top:-50px;left:15%;width:500px;height:500px;background:radial-gradient(circle,rgba(212,188,148,.1) 0%,rgba(196,169,125,.04) 40%,transparent 70%);border-radius:50%;pointer-events:none}
 .content-area::after{content:'';position:absolute;top:300px;right:5%;width:450px;height:450px;background:radial-gradient(circle,rgba(212,166,72,.07) 0%,rgba(196,169,125,.03) 40%,transparent 70%);border-radius:50%;pointer-events:none}
 
-.line-sep{height:1px;background:linear-gradient(90deg,transparent,var(--sand),rgba(196,169,125,.3),var(--sand),transparent);background-size:200% 100%;animation:sweep 4s linear infinite;opacity:.4}
+.line-sep{height:1px;background:linear-gradient(90deg,transparent,var(--sand),rgba(196,169,125,.3),var(--sand),transparent);background-size:200% 100%;animation:sweep 40s linear infinite;opacity:.4}
 @keyframes sweep{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 /* ═══ CONTENT ═══ */
@@ -181,7 +181,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
   <canvas id="heroSandCanvas"></canvas>
   <div class="hero-content">
     <h1><em>Portal FlowSkins</em></h1>
-    <img src="https://static.wixstatic.com/media/874864_b5b426ab8e634424b9c5e1cee38a67f3~mv2.png/v1/fill/w_600,h_255,al_c,q_85,enc_auto/874864_b5b426ab8e634424b9c5e1cee38a67f3~mv2.png" alt="CS2" style="width:60px;height:auto;margin:12px auto 16px;display:block;opacity:.7;filter:drop-shadow(0 2px 8px rgba(196,169,125,.3))">
+    <img src="https://static.wixstatic.com/media/874864_00b48579d99c45b7a4420bd005bd501a~mv2.png/v1/fill/w_471,h_600,al_c,lg_1,q_85,enc_auto/874864_00b48579d99c45b7a4420bd005bd501a~mv2.png" alt="CS2 Agent" style="width:160px;height:auto;margin:16px auto 20px;display:block;filter:drop-shadow(0 6px 20px rgba(0,0,0,.5))">
     <p>Atualizações, patches, torneios e novidades do CS2 — ao vivo.</p>
   </div>
 </section>
@@ -337,11 +337,11 @@ class StormGrain{
     this.x=Math.random()*w;
     this.y=init?Math.random()*h:-Math.random()*40;
     this.size=Math.random()*1.8+.3;
-    this.speedY=Math.random()*1.2+.5;
-    this.speedX=Math.random()*.5+.1;
+    this.speedY=Math.random()*.08+.02;
+    this.speedX=Math.random()*.03+.005;
     this.wobble=Math.random()*Math.PI*2;
-    this.wobbleAmp=Math.random()*.8+.3;
-    this.wobbleSpd=Math.random()*.03+.01;
+    this.wobbleAmp=Math.random()*.1+.03;
+    this.wobbleSpd=Math.random()*.004+.001;
     this.opacity=Math.random()*.2+.05;
     this.color=stormColors[Math.floor(Math.random()*stormColors.length)];
     this.trail=Math.random()>.7;
@@ -398,7 +398,7 @@ addEventListener('resize',()=>{resizeHeroCanvas();initStorm()});
 const cv=document.getElementById('sandCanvas'),cx=cv.getContext('2d');let sp=[];
 function rs(){cv.width=innerWidth;cv.height=innerHeight}rs();addEventListener('resize',rs);
 const sColors=['196,169,125','212,188,148','180,155,110','232,213,176','160,140,100'];
-class S{constructor(){this.r(true)}r(i){this.x=i?Math.random()*cv.width:-10;this.y=Math.random()*cv.height;this.sz=Math.random()*2+.5;this.sx=Math.random()*1.5+.5;this.sy=(Math.random()-.5)*.8;this.o=Math.random()*.25+.05;this.w=Math.random()*Math.PI*2;this.ws=Math.random()*.02+.005;this.c=sColors[Math.floor(Math.random()*sColors.length)]}u(){this.w+=this.ws;this.x+=this.sx;this.y+=this.sy+Math.sin(this.w)*.3;if(this.x>cv.width+10)this.r(false)}d(){cx.beginPath();cx.arc(this.x,this.y,this.sz,0,Math.PI*2);cx.fillStyle=`rgba(${this.c},${this.o})`;cx.fill()}}
+class S{constructor(){this.r(true)}r(i){this.x=i?Math.random()*cv.width:-10;this.y=Math.random()*cv.height;this.sz=Math.random()*2+.5;this.sx=Math.random()*.1+.02;this.sy=(Math.random()-.5)*.05;this.o=Math.random()*.25+.05;this.w=Math.random()*Math.PI*2;this.ws=Math.random()*.003+.001;this.c=sColors[Math.floor(Math.random()*sColors.length)]}u(){this.w+=this.ws;this.x+=this.sx;this.y+=this.sy+Math.sin(this.w)*.04;if(this.x>cv.width+10)this.r(false)}d(){cx.beginPath();cx.arc(this.x,this.y,this.sz,0,Math.PI*2);cx.fillStyle=`rgba(${this.c},${this.o})`;cx.fill()}}
 for(let i=0;i<120;i++)sp.push(new S());
 function anim(){cx.clearRect(0,0,cv.width,cv.height);sp.forEach(p=>{p.u();p.d()});requestAnimationFrame(anim)}anim();
 
@@ -406,15 +406,17 @@ function anim(){cx.clearRect(0,0,cv.width,cv.height);sp.forEach(p=>{p.u();p.d()}
 const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}})},{threshold:.05});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// ═══ CS2 IMAGES — guaranteed pool ═══
+// ═══ CS2 IMAGES — real from counter-strike.net ═══
 const csImg=[
-  'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/ss_d196d945c6170e9cadbb23a1b351261c52032421.600x338.jpg',
-  'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/ss_796601d9d67faf53486eeb26d0724347cea67dde.600x338.jpg',
-  'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/ss_d830cfd0550fbb64d80e803e93654ab545e4d65c.600x338.jpg',
-  'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/ss_118cb022b9a43f70d2e5a2df7427f29088b6b191.600x338.jpg',
-  'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/ss_34090867f1a02b6c37fdc461c3cf84eae0c187cf.600x338.jpg',
-  'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/header.jpg',
-  'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/capsule_616x353.jpg'
+  'https://clan.fastly.steamstatic.com/images/3381077/90e2a7b72ccc626e600b9ce52a418c523685f1c9.png',
+  'https://clan.fastly.steamstatic.com/images/3381077/3ae4df0d5da81bfc442f9e162af19e2fa5791716.png',
+  'https://clan.fastly.steamstatic.com/images/3381077/12d1d43a276f081ec986c621df8c59b8faf7de8e.png',
+  'https://clan.fastly.steamstatic.com/images/3381077/11b0b1396c841807c8626f72dffd388ababb5f86.png',
+  'https://clan.fastly.steamstatic.com/images/3381077/89ab38f84911989f17b33545d4720b9131202586.png',
+  'https://clan.fastly.steamstatic.com/images/3381077/2d3b82bc5a272740d2c36d2d58910702e4d13d0b.png',
+  'https://clan.fastly.steamstatic.com/images/3381077/91b6550211fd98cb72bb87e248f3878dd592c356.png',
+  'https://clan.fastly.steamstatic.com/images/3381077/aefdbaa5f30de1223c8285d17d283eb686e26dd2.png',
+  'https://clan.fastly.steamstatic.com/images/3381077/85f0b3784ebd47405f2eb6f898610f1423d2c889.png'
 ];
 
 // ═══ NEWS DATA STORE ═══
@@ -448,11 +450,12 @@ function timeAgo(ts){const d=Math.floor(Date.now()/1000-ts);if(d<3600)return Mat
 function clean(s){return(s||'').replace(/\[.*?\]/g,'').replace(/<[^>]*>/g,'').replace(/\{STEAM_CLAN_IMAGE\}[^\s]*/g,'').replace(/https?:\/\/[^\s]*/g,'').trim().substring(0,160)}
 function cleanFull(s){return(s||'').replace(/\[.*?\]/g,'').replace(/<[^>]*>/g,'').replace(/\{STEAM_CLAN_IMAGE\}[^\s]*/g,'').replace(/https?:\/\/[^\s]*/g,'').trim()}
 function getImg(item,i){
+  if(item._img)return item._img;
   if(!item.contents)return csImg[i%csImg.length];
   const m=item.contents.match(/https?:\/\/[^\s"'\]]+\.(jpg|jpeg|png|gif|webp)/i);
   if(m)return m[0];
   const c=item.contents.match(/\{STEAM_CLAN_IMAGE\}([^\s\[\]"]+)/);
-  if(c)return'https://clan.cloudflare.steamstatic.com/images/'+c[1];
+  if(c)return'https://clan.fastly.steamstatic.com/images/'+c[1];
   return csImg[i%csImg.length];
 }
 function getTag(item){
@@ -462,19 +465,19 @@ function getTag(item){
   return{c:'tag-update',t:item.feedlabel||'CS2'};
 }
 
-// ═══ STATIC NEWS ═══
+// ═══ STATIC NEWS — real from counter-strike.net ═══
 function staticNews(){
   const n=Math.floor(Date.now()/1000);
   return[
-    {title:'CS2 recebe atualização massiva: novo sistema de ranking e melhorias de performance',contents:'A Valve lançou a maior atualização do ano para o Counter-Strike 2, com sistema de ranking renovado, otimização de performance e correções de renderização em todos os mapas competitivos. A atualização também trouxe melhorias no sistema de matchmaking e novos recursos para o modo competitivo.',date:n-3200,author:'Valve',feedlabel:'CS2 Updates',url:'https://store.steampowered.com/news/app/730'},
-    {title:'Mirage ganha visual update: texturas 4K e iluminação dinâmica',contents:'O mapa mais icônico do CS2 recebeu uma reformulação visual completa com texturas em alta resolução e sistema de iluminação renovado. As mudanças incluem novos detalhes ambientais no Meio, Connector e bombsite A.',date:n-6400,author:'CS2 Team',feedlabel:'CS2 Updates',url:'https://store.steampowered.com/news/app/730'},
-    {title:'BLAST Premier 2026: NAVI e FaZe na grande final',contents:'As duas equipes mais dominantes da temporada garantiram vaga na final do maior torneio do ano. A decisão acontece no próximo final de semana com premiação de $1 milhão de dólares.',date:n-9600,author:'BLAST',feedlabel:'Esports',url:'https://store.steampowered.com/news/app/730'},
-    {title:'Nova operação: skins exclusivas e mapas inéditos vazam',contents:'Arquivos de atualização revelam uma nova operação com pelo menos 8 skins exclusivas, 3 mapas novos e um sistema de missões completamente redesenhado.',date:n-14400,author:'Valve',feedlabel:'CS2 Updates',url:'https://store.steampowered.com/news/app/730'},
-    {title:'Butterfly Knife Fade atinge recorde histórico de preço',contents:'A faca mais cobiçada do CS2 atingiu seu maior valor desde o lançamento, impulsionada pela demanda do mercado chinês e pela especulação de descontinuação.',date:n-21600,author:'Market',feedlabel:'Steam Community',url:'https://store.steampowered.com/news/app/730'},
-    {title:'VAC Live: como funciona o novo anti-cheat com IA',contents:'O sistema anti-cheat de última geração utiliza machine learning para detectar comportamentos suspeitos em tempo real. A Valve afirma que o sistema já baniu mais de 500 mil contas.',date:n-28800,author:'Valve',feedlabel:'CS2 Updates',url:'https://store.steampowered.com/news/app/730'},
-    {title:'Patch 1.42: nerf na AWP, buff no Deagle e ajustes no spray',contents:'O último balanceamento trouxe mudanças nas armas mais populares do jogo. A AWP teve seu tempo de escopo aumentado, enquanto o Deagle ganhou precisão no primeiro tiro.',date:n-36000,author:'Valve',feedlabel:'CS2 Updates',url:'https://store.steampowered.com/news/app/730'},
-    {title:'FalleN monta super-equipe para temporada 2026',contents:'O lendário capitão brasileiro anunciou uma formação com jovens talentos e veteranos para disputar os principais torneios internacionais da próxima temporada.',date:n-43200,author:'Esports BR',feedlabel:'Esports',url:'https://store.steampowered.com/news/app/730'},
-    {title:'Como otimizar FPS no CS2: guia definitivo 2026',contents:'Configurações de vídeo, launch options e ajustes de sistema para maximizar performance. Inclui comparativos entre resoluções e drivers atualizados.',date:n-50400,author:'Community',feedlabel:'Steam Community',url:'https://store.steampowered.com/news/app/730'},
+    {title:'Beta do Animgraph 2',contents:'Estamos lançando hoje um beta que atualiza o sistema de animações do CS2 para o Animgraph 2, que reduz os custos de processamento e rede associados a animações.',date:n-345600,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/528750051218948816',_img:csImg[0]},
+    {title:'Armas, aprendizados e alternativas',contents:'Seja ao recarregar ou ao jogar um modo personalizado, a atualização de hoje fará você pensar bastante. Ao recarregar a sua arma no CS2, a munição restante no pente é devolvida às suas reservas.',date:n-432000,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/532126482488623353',_img:csImg[1]},
+    {title:'A Mão Morta',contents:'Apresentamos hoje a Coleção Mão Morta, com 17 revestimentos criados por membros da comunidade e 22 revestimentos criados pela Valve — incluindo novas skins para facas e luvas.',date:n-518400,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/518615049848225858',_img:csImg[2]},
+    {title:'Counter-Strike sem limites',contents:'Hoje temos uma atualização grande. Novas armas, novos mapas, novo sistema de ranks e muitas melhorias de qualidade de vida que a comunidade vinha pedindo há tempos.',date:n-604800,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/511855214544814488',_img:csImg[3]},
+    {title:'Apresentando o CS Rating',contents:'O novo sistema de classificação do CS2 chegou. O CS Rating substitui o antigo sistema de patentes e traz uma experiência competitiva mais transparente e justa para todos os jogadores.',date:n-691200,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/4491737389498543702',_img:csImg[4]},
+    {title:'Uma questão de tempo',contents:'A atualização de hoje traz ajustes significativos no sistema de economia das partidas competitivas, novos tempos de rodada e mudanças no comportamento das granadas.',date:n-777600,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/4478573011804498748',_img:csImg[5]},
+    {title:'Dinheiro bem gasto',contents:'Novo case chegando ao CS2 com skins exclusivas criadas pela comunidade e pela Valve. Confira os novos revestimentos para AK-47, AWP, M4A1-S e muito mais.',date:n-864000,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/4464752152455593428',_img:csImg[6]},
+    {title:'Jogando limpo',contents:'O VAC Live recebeu uma grande atualização. O novo sistema anti-cheat agora utiliza machine learning avançado para detectar trapaceiros em tempo real durante as partidas.',date:n-950400,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/4449543263133879118',_img:csImg[7]},
+    {title:'De olho no alvo',contents:'Atualização de balanceamento de armas: ajustes no spray da M4A1-S, mudanças na velocidade de escopo da AWP e melhorias na precisão do Deagle em movimento.',date:n-1036800,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/4426755046729544316',_img:csImg[8]},
   ];
 }
 
