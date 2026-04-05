@@ -48,13 +48,28 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:300px;background:linear-gradient(180deg,rgba(196,169,125,.06) 0%,transparent 100%);pointer-events:none;z-index:1}
 #heroSandCanvas{position:absolute;inset:0;z-index:2;pointer-events:none}
 .hero-content{position:relative;z-index:3;max-width:650px;margin:0 auto}
-.hero .scoreboard-section{max-width:900px;margin:30px auto 0;padding:0 16px}
 .hero h1{font-size:clamp(28px,4.5vw,48px);font-weight:800;line-height:1.08;letter-spacing:-.04em;color:var(--sand-xl);margin-bottom:14px}
 .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--sand),var(--gold),var(--sand-l));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 5s linear infinite}
 @keyframes shimmer{0%{background-position:0% center}100%{background-position:200% center}}
 @keyframes agentGlow{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.6}50%{transform:translate(-50%,-50%) scale(1.3);opacity:1}}
 @keyframes agentFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .hero p{font-size:clamp(13px,1.5vw,16px);line-height:1.7;color:var(--t2);max-width:480px;margin:0 auto}
+
+/* ═══ LIVE HIGHLIGHT ═══ */
+.live-highlight{margin-bottom:28px}
+.live-card{background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(239,68,68,.02));border:1px solid rgba(239,68,68,.15);border-radius:14px;padding:24px;text-align:center;position:relative;overflow:hidden}
+.live-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#EF4444,transparent);animation:sweep 4s linear infinite}
+.live-badge{display:inline-block;padding:4px 14px;border-radius:100px;background:rgba(239,68,68,.15);color:#EF4444;font-size:10px;font-weight:800;letter-spacing:.1em;font-family:'Space Mono',monospace;margin-bottom:16px;animation:blink 1.5s ease-in-out infinite}
+.live-match{display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:12px}
+.live-team{font-size:clamp(18px,3vw,26px);font-weight:800;color:var(--sand-xl)}
+.live-score{display:flex;align-items:center;gap:10px;font-family:'Space Mono',monospace}
+.live-score span{font-size:clamp(28px,5vw,42px);font-weight:800;color:var(--sand-xl)}
+.live-x{font-size:clamp(16px,2vw,20px);color:var(--t3)}
+.live-event{font-size:12px;color:var(--t3);font-family:'Space Mono',monospace}
+
+/* ═══ LIVE STREAM ═══ */
+.stream-section{margin-bottom:40px}
+.stream-wrap{max-width:800px;margin:0 auto;border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:0 8px 30px rgba(0,0,0,.3)}
 
 /* ═══ LIVE SCOREBOARD ═══ */
 .scoreboard-section{margin:48px 0}
@@ -220,10 +235,39 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
     </div>
     <p style="font-size:clamp(13px,1.5vw,16px);line-height:1.7;color:var(--t2);max-width:480px;margin:0 auto">Atualizações, patches, torneios e novidades do CS2 — ao vivo.</p>
   </div>
+</section>
 
-  <!-- LIVE ESPORTS SCOREBOARD -->
+<div class="line-sep"></div>
+
+<!-- NEWS AREA — lighter background -->
+<div class="content-area">
+<div class="content">
+
+  <!-- 🔴 LIVE MATCH — destaque -->
+  <div class="live-highlight reveal">
+    <div class="sec-label">🔴 Ao Vivo Agora</div>
+    <div class="live-card">
+      <div class="live-badge">LIVE</div>
+      <div class="live-match">
+        <div class="live-team">NRG</div>
+        <div class="live-score"><span>1</span><span class="live-x">×</span><span>1</span></div>
+        <div class="live-team">Voca</div>
+      </div>
+      <div class="live-event">PGL Bucharest 2026 • Swiss Stage • BO3</div>
+    </div>
+  </div>
+
+  <!-- LIVE STREAM -->
+  <div class="stream-section reveal">
+    <div class="sec-label">📺 Transmissão ao Vivo</div>
+    <div class="stream-wrap">
+      <iframe src="https://www.youtube.com/embed/CfZVyMZnoMA?rel=0&autoplay=0" title="CS2 Live" allowfullscreen loading="lazy" style="width:100%;aspect-ratio:16/9;border:none;border-radius:12px;display:block"></iframe>
+    </div>
+  </div>
+
+  <!-- RESULTADOS DE HOJE -->
   <div class="scoreboard-section reveal">
-    <div class="sec-label">🔴 Torneios ao Vivo</div>
+    <div class="sec-label">Resultados de Hoje — PGL Bucharest 2026</div>
     <div class="scoreboard-grid">
       <div class="tournament-card">
         <div class="tournament-header">
@@ -233,29 +277,20 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
         <div class="match-row"><div class="match-team">FaZe</div><div class="match-score"><span class="score-num">0</span><span class="score-vs">:</span><span class="score-num win">2</span></div><div class="match-team right">EYEBALLERS</div></div>
         <div class="match-row"><div class="match-team">3DMAX</div><div class="match-score"><span class="score-num win">2</span><span class="score-vs">:</span><span class="score-num">1</span></div><div class="match-team right">FOKUS</div></div>
         <div class="match-row"><div class="match-team">Betclic</div><div class="match-score"><span class="score-num win">2</span><span class="score-vs">:</span><span class="score-num">0</span></div><div class="match-team right">Luminous</div></div>
-        <div class="match-row live"><div class="match-team">NRG</div><div class="match-score"><span class="score-num">1</span><span class="score-vs live-vs">LIVE</span><span class="score-num">1</span></div><div class="match-team right">Voca</div></div>
-        <a href="https://www.hltv.org/events/8313/pgl-bucharest-2026" target="_blank" class="tournament-link">Ver todos os resultados →</a>
+        <a href="https://www.hltv.org/events/8313/pgl-bucharest-2026" target="_blank" class="tournament-link">Ver todos os resultados no HLTV →</a>
       </div>
       <div class="tournament-card">
         <div class="tournament-header">
           <div class="tournament-name">IEM Rio 2026</div>
-          <div class="tournament-meta">$1.000.000 • Rio de Janeiro 🇧🇷</div>
+          <div class="tournament-meta">$1.000.000 • Rio de Janeiro 🇧🇷 • Começa 13 ABR</div>
         </div>
         <div class="match-row upcoming"><div class="match-team">NAVI</div><div class="match-score"><span class="match-date">13 ABR</span></div><div class="match-team right">Spirit</div></div>
         <div class="match-row upcoming"><div class="match-team">Vitality</div><div class="match-score"><span class="match-date">13 ABR</span></div><div class="match-team right">MOUZ</div></div>
-        <div class="match-row upcoming"><div class="match-team">Liquid</div><div class="match-score"><span class="match-date">14 ABR</span></div><div class="match-team right">G2</div></div>
         <div class="match-row upcoming"><div class="match-team">FURIA</div><div class="match-score"><span class="match-date">14 ABR</span></div><div class="match-team right">FaZe</div></div>
         <a href="https://www.hltv.org/events/8243/iem-rio-2026" target="_blank" class="tournament-link">Ver programação completa →</a>
       </div>
     </div>
   </div>
-</section>
-
-<div class="line-sep"></div>
-
-<!-- NEWS AREA — lighter background -->
-<div class="content-area">
-<div class="content">
 
   <div id="newsFeed"><div class="loading"><div class="spinner"></div><div>Carregando notícias...</div></div></div>
 
