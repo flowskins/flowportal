@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flow Portal — Notícias e Mercado CS2</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#08090d;--bg2:#0d0f14;--bg3:#12151c;--bg4:#181c25;
+  --green:#22c55e;--red:#ef4444;--cyan:#06b6d4;--purple:#8b5cf6;--amber:#f59e0b;--blue:#3b82f6;
+  --t1:#e2e8f0;--t2:#94a3b8;--t3:#64748b;--t4:#475569;
+  --border:rgba(255,255,255,.06);
+}
+html,body{overflow-x:hidden;scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* ═══ SERVICE BAR ═══ */
+.service-bar{position:fixed;top:0;left:0;right:0;z-index:1001;display:flex;align-items:center;justify-content:center;gap:4px;padding:6px 16px;background:linear-gradient(90deg,rgba(34,197,94,.06),rgba(139,92,246,.06),rgba(6,182,212,.06));border-bottom:1px solid var(--border)}
+.service-pill{padding:5px 14px;border-radius:6px;text-decoration:none;font-weight:600;font-size:11px;transition:all .3s;display:flex;align-items:center;gap:5px}
+.service-pill .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.service-pill:hover{transform:translateY(-1px)}
+.pill-price{color:var(--green);background:rgba(34,197,94,.06)}.pill-price:hover{background:rgba(34,197,94,.15)}.pill-price .dot{background:var(--green)}
+.pill-mid{color:var(--purple);background:rgba(139,92,246,.06)}.pill-mid:hover{background:rgba(139,92,246,.15)}.pill-mid .dot{background:var(--purple)}
+.pill-gestor{color:var(--cyan);background:rgba(6,182,212,.06)}.pill-gestor:hover{background:rgba(6,182,212,.15)}.pill-gestor .dot{background:var(--cyan)}
+.pill-store{color:var(--amber);background:rgba(245,158,11,.06)}.pill-store:hover{background:rgba(245,158,11,.15)}.pill-store .dot{background:var(--amber)}
+
+/* ═══ NAVBAR ═══ */
+.navbar{position:fixed;top:33px;left:0;right:0;z-index:1000;padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,9,13,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-icon{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--green),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+.nav-logo-text{font-weight:700;font-size:16px;color:var(--t1)}.nav-logo-text span{color:var(--t3);font-weight:500}
+.nav-tag{font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;background:rgba(34,197,94,.1);color:var(--green);text-transform:uppercase;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;margin-left:8px}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-time{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t3)}
+.nav-live{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.08em}
+.nav-live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--red);animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ═══ LAYOUT ═══ */
+.main{padding-top:89px;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 340px;gap:0;min-height:100vh}
+.feed{border-right:1px solid var(--border)}
+.sidebar{position:sticky;top:89px;height:calc(100vh - 89px);overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:var(--t4);border-radius:2px}
+
+/* ═══ LOADING ═══ */
+.loading{text-align:center;padding:60px 20px;color:var(--t3)}
+.loading-spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ═══ BREAKING BAR ═══ */
+.breaking{padding:14px 24px;background:rgba(34,197,94,.03);border-bottom:1px solid rgba(34,197,94,.1);display:flex;align-items:center;gap:12px;overflow:hidden}
+.breaking-badge{font-size:9px;font-weight:800;padding:3px 10px;border-radius:4px;background:var(--green);color:#000;text-transform:uppercase;letter-spacing:.1em;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.breaking-text{font-size:13px;font-weight:600;color:var(--t1);white-space:nowrap;animation:scroll 25s linear infinite}
+@keyframes scroll{0%{transform:translateX(60%)}100%{transform:translateX(-100%)}}
+
+/* ═══ NEWS ═══ */
+.feed-section{padding:24px}
+.feed-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--t4);margin-bottom:16px;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:6px}
+.feed-label::before{content:'';width:3px;height:12px;border-radius:2px;background:var(--green)}
+
+.news-hero{border-radius:14px;overflow:hidden;background:var(--bg3);border:1px solid var(--border);margin-bottom:20px;cursor:pointer;transition:all .3s;text-decoration:none;display:block;color:inherit}
+.news-hero:hover{border-color:rgba(255,255,255,.1);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.news-hero-img{width:100%;height:280px;object-fit:cover;display:block;background:var(--bg4)}
+.news-hero-body{padding:24px}
+.news-tag{font-size:9px;font-weight:700;padding:3px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;display:inline-block;margin-bottom:10px}
+.tag-update{background:rgba(34,197,94,.1);color:var(--green)}
+.tag-community{background:rgba(59,130,246,.1);color:var(--blue)}
+.tag-valve{background:rgba(139,92,246,.1);color:var(--purple)}
+.news-hero h2{font-size:22px;font-weight:800;line-height:1.25;letter-spacing:-.02em;margin-bottom:10px}
+.news-hero p{font-size:14px;line-height:1.6;color:var(--t2)}
+.news-meta{display:flex;align-items:center;gap:12px;margin-top:14px;font-size:11px;color:var(--t4);flex-wrap:wrap}
+.news-meta-dot{width:3px;height:3px;border-radius:50%;background:var(--t4)}
+
+.news-list{display:flex;flex-direction:column;gap:12px}
+.news-item{display:flex;gap:16px;padding:16px;border-radius:12px;border:1px solid var(--border);background:var(--bg2);cursor:pointer;transition:all .3s;text-decoration:none;color:inherit}
+.news-item:hover{border-color:rgba(255,255,255,.1);background:var(--bg3)}
+.news-item-body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.news-item h3{font-size:14px;font-weight:700;line-height:1.35;margin-bottom:6px;letter-spacing:-.01em}
+.news-item .news-meta{margin-top:0}
+
+.news-source{font-size:10px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,.04);color:var(--t3);font-family:'JetBrains Mono',monospace}
+
+/* ═══ SIDEBAR ═══ */
+.sidebar-section{padding:20px;border-bottom:1px solid var(--border)}
+.sidebar-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t4);margin-bottom:14px;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:space-between}
+.sidebar-title .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite}
+
+.market-status{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.status-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
+.status-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t4);margin-bottom:4px;font-family:'JetBrains Mono',monospace}
+.status-value{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700}
+.status-value.green{color:var(--green)}.status-value.red{color:var(--red)}.status-value.cyan{color:var(--cyan)}
+
+.mover-mini{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.mover-mini:last-child{border:none}
+.mover-mini-rank{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--t4);width:16px}
+.mover-mini-img{width:40px;height:30px;object-fit:contain;border-radius:4px;background:rgba(255,255,255,.02)}
+.mover-mini-info{flex:1;min-width:0}
+.mover-mini-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mover-mini-pct{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px}
+.mover-mini-pct.up{background:rgba(34,197,94,.1);color:var(--green)}
+.mover-mini-pct.down{background:rgba(239,68,68,.1);color:var(--red)}
+
+.quick-link{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);margin-bottom:8px;text-decoration:none;transition:all .3s}
+.quick-link:hover{border-color:rgba(255,255,255,.1);transform:translateX(3px)}
+.quick-link-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.quick-link h4{font-size:13px;font-weight:700;color:var(--t1)}
+.quick-link p{font-size:11px;color:var(--t3);margin-top:1px}
+
+/* ═══ FOOTER ═══ */
+.footer{grid-column:1/-1;border-top:1px solid var(--border);padding:30px 24px;text-align:center}
+.footer p{font-size:12px;color:var(--t4)}.footer a{color:var(--t3);text-decoration:none}.footer a:hover{color:var(--green)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1024px){.main{grid-template-columns:1fr}.sidebar{display:none}.service-bar{flex-wrap:wrap;gap:3px;padding:4px 8px}}
+@media(max-width:768px){
+  .navbar{padding:0 16px;height:50px;top:29px}.main{padding-top:79px}
+  .service-bar{gap:2px;padding:3px 6px}.service-pill{font-size:10px;padding:4px 10px}
+  .feed-section{padding:16px}.news-hero-img{height:180px}.news-hero h2{font-size:18px}
+  .nav-time{display:none}
+}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--t4);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- SERVICE BAR -->
+<div class="service-bar">
+  <a href="https://price.flowskins.com.br" class="service-pill pill-price"><div class="dot"></div> FlowPrice</a>
+  <a href="https://mid.flowskins.com.br" class="service-pill pill-mid"><div class="dot"></div> FlowMid</a>
+  <a href="https://flowskins.com.br" class="service-pill pill-gestor"><div class="dot"></div> FlowSkins Gestor</a>
+  <a href="#" class="service-pill pill-store"><div class="dot"></div> FlowStore</a>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div style="display:flex;align-items:center">
+    <a href="#" class="nav-logo"><div class="nav-logo-icon">F</div><div class="nav-logo-text">Flow <span>Portal</span></div></a>
+    <div class="nav-tag">CS2</div>
+  </div>
+  <div class="nav-right">
+    <div class="nav-time mono" id="clock"></div>
+    <div class="nav-live">AO VIVO</div>
+  </div>
+</nav>
+
+<div class="main">
+  <!-- FEED -->
+  <div class="feed">
+    <div class="breaking">
+      <div class="breaking-badge">LIVE</div>
+      <div class="breaking-text" id="breakingText">Carregando últimas notícias do CS2...</div>
+    </div>
+
+    <div class="feed-section" id="newsFeed">
+      <div class="loading">
+        <div class="loading-spinner"></div>
+        <div>Carregando notícias do CS2...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Status do Mercado <div class="live-dot"></div></div>
+      <div class="market-status">
+        <div class="status-card"><div class="status-label">Skins</div><div class="status-value cyan mono">21.8K</div></div>
+        <div class="status-card"><div class="status-label">Plataformas</div><div class="status-value green mono">58+</div></div>
+        <div class="status-card"><div class="status-label">Alta (7d)</div><div class="status-value green mono">67%</div></div>
+        <div class="status-card"><div class="status-label">Baixa (7d)</div><div class="status-value red mono">33%</div></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Top Gainers 7D <div class="live-dot"></div></div>
+      <div class="mover-mini"><div class="mover-mini-rank">1</div><img class="mover-mini-img" src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UXnMyiVahVW4PuL9ExA65QQHZ-h7dCA0h5dcLVNVaFT-OhR8aOP-Md3SMR04A0tRYh19WEbUQ-f_h5yBBBYiN7uFo5S3MFDi0OXNdGkSvYy0kIGKkPL6MbmGwzgJ65Ap2u-VYf0jlC5pBE-azvzI9eLJwA2YV-C81m_xu3shJS_vJbJm3o27nIg4yyIzRyuwkMbYZp0ifrZHF_PfYQ/72fx54f" alt=""><div class="mover-mini-info"><div class="mover-mini-name">Butterfly | Fade FN</div></div><div class="mover-mini-pct up">+18.2%</div></div>
+      <div class="mover-mini"><div class="mover-mini-rank">2</div><img class="mover-mini-img" src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UXnMyiVahVW4PuL9ExA65QQHZ-h7dCA0h5dcLVNVaFT-OhR8aOP-Md3SMR04A0tRYh19WEbUQ-f_h5yBBBYiNbsKvxj1MFfbfj2UGMnul9OJkJiCnvGhYe6FxjkB6Ydj2O7Fp9Wm0Qe6UJvdj_DewvQNdOdKYNbqVi3l-ckJe6ucqcmSBk7HJy7SrVlRax0hwfbp1xgPvPFxWJZw/72fx54f" alt=""><div class="mover-mini-info"><div class="mover-mini-name">AK-47 | Redline FT</div></div><div class="mover-mini-pct up">+12.7%</div></div>
+      <div class="mover-mini"><div class="mover-mini-rank">3</div><img class="mover-mini-img" src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UXnMyiVahVW4PuL9ExA65QQHZ-h7dCA0h5dcLVNVaFT-OhR8aOP-Md3SMR04A0tRYh19WEbUQ-f_h5yBBBYiNLOHr_9KeQ_3xfOcJW0Xvo_iz4aOhfbzNr2HxG4Hv5Uijr-Wp9ul2wzsrRA_LD-gd9CLfQ85ZFiD_Va-w-m8h5Tov5mbynA2uSYi5y_YxkfibgaRpwN/72fx54f" alt=""><div class="mover-mini-info"><div class="mover-mini-name">Pandora's Box MW</div></div><div class="mover-mini-pct up">+9.4%</div></div>
+      <div class="mover-mini"><div class="mover-mini-rank">4</div><img class="mover-mini-img" src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UXnMyiVahVW4PuL9ExA65QQHZ-h7dCA0h5dcLVNVaFT-OhR8aOP-Md3SMR04A0tRYh19WEbUQ-f_h5yBBBYiNA-4rFlSLDnlzODAcC9N_9i4q4yKl_HxMbmIwjkJ7JIj2u3Eotug3wayr0doZDihJIaLdA44NArRqAO9kOi6h8S-7sycmyBl7SkhtyDezBWpwUYbYZt0HP-EHPPk/72fx54f" alt=""><div class="mover-mini-info"><div class="mover-mini-name">AWP | Asiimov BS</div></div><div class="mover-mini-pct up">+7.1%</div></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Top Losers 7D</div>
+      <div class="mover-mini"><div class="mover-mini-rank">1</div><img class="mover-mini-img" src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UXnMyiVahVW4PuL9ExA65QQHZ-h7dCA0h5dcLVNVaFT-OhR8aOP-Md3SMR04A0tRYh19WEbUQ-f_h5yBBBYiMo-9rAl1wMz3fDdR093lxdKQxoWYhPb6DLfQhFRB4MRz3r2Z9Iz3jFHm_ERsZmmzJ4SUBg4Zl6BrhO_h-y8gcK97p_PzXZgvCIj4HfdzBepwUYbbVV3jPQ/72fx54f" alt=""><div class="mover-mini-info"><div class="mover-mini-name">Glock-18 | Fade FN</div></div><div class="mover-mini-pct down">-8.6%</div></div>
+      <div class="mover-mini"><div class="mover-mini-rank">2</div><img class="mover-mini-img" src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UXnMyiVahVW4PuL9ExA65QQHZ-h7dCA0h5dcLVNVaFT-OhR8aOP-Md3SMR04A0tRYh19WEbUQ-f_h5yBBBYiPA-ptLhKe1Y975U6Id3gztiQx9TaxKWtZe2Iwz9Xvpd12ezA_JjyxQy18kNpMGCnctKXJFI5ZF-D_QC2l-jm0Je66JvJynRr6SJ27Srey0m1hx1Jb-I6j_vPEDGXTA7J/72fx54f" alt=""><div class="mover-mini-info"><div class="mover-mini-name">Deagle | Blaze FN</div></div><div class="mover-mini-pct down">-6.2%</div></div>
+      <div class="mover-mini"><div class="mover-mini-rank">3</div><img class="mover-mini-img" src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UXnMyiVahVW4PuL9ExA65QQHZ-h7dCA0h5dcLVNVaFT-OhR8aOP-Md3SMR04A0tRYh19WEbUQ-f_h5yBBBYiMox4v7eaJAR1wfbNdShe7t27xIaEm-XLP7rDlG0J65Yl2OiY9IqhjVWx-kVtMD_wdoGVIAA2fxiN-FS2w-a6gJ--7p_I7idk6XNq5irYyhKpwUYb2ufJLw/72fx54f" alt=""><div class="mover-mini-info"><div class="mover-mini-name">M4A4 | Howl FT</div></div><div class="mover-mini-pct down">-3.1%</div></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Ecossistema Flow</div>
+      <a href="https://price.flowskins.com.br" class="quick-link"><div class="quick-link-icon" style="background:rgba(34,197,94,.08)">📊</div><div><h4 style="color:var(--green)">FlowPrice</h4><p>Compare preços em 58+ plataformas</p></div></a>
+      <a href="https://mid.flowskins.com.br" class="quick-link"><div class="quick-link-icon" style="background:rgba(139,92,246,.08)">🛡️</div><div><h4 style="color:var(--purple)">FlowMid</h4><p>Escrow seguro pra trades P2P</p></div></a>
+      <a href="https://flowskins.com.br" class="quick-link"><div class="quick-link-icon" style="background:rgba(6,182,212,.08)">⚙️</div><div><h4 style="color:var(--cyan)">FlowSkins Gestor</h4><p>Gestão completa de trading</p></div></a>
+      <a href="#" class="quick-link"><div class="quick-link-icon" style="background:rgba(245,158,11,.08)">🏪</div><div><h4 style="color:var(--amber)">FlowStore</h4><p>Loja de skins — em breve</p></div></a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>© 2026 Flow Portal — Ecossistema Flow &nbsp;|&nbsp; <a href="#">Termos</a> &nbsp;|&nbsp; <a href="#">Privacidade</a> &nbsp;|&nbsp; Fonte: Steam News API</p>
+  </footer>
+</div>
+
+<script>
+// ═══ CLOCK ═══
+function updateClock(){
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}) + ' BRT';
+}
+updateClock(); setInterval(updateClock,1000);
+
+// ═══ FETCH REAL CS2 NEWS ═══
+async function loadNews(){
+  const feed = document.getElementById('newsFeed');
+  const breakingEl = document.getElementById('breakingText');
+
+  try {
+    const res = await fetch('https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=730&count=15&maxlength=300');
+    const data = await res.json();
+    const news = data.appnews.newsitems;
+
+    if(!news || news.length === 0){
+      feed.innerHTML = '<div class="loading">Nenhuma notícia encontrada.</div>';
+      return;
+    }
+
+    // Breaking = first news title
+    breakingEl.textContent = news[0].title;
+
+    // Helper: time ago
+    function timeAgo(ts){
+      const diff = Math.floor((Date.now()/1000) - ts);
+      if(diff < 3600) return Math.floor(diff/60) + ' min atrás';
+      if(diff < 86400) return Math.floor(diff/3600) + 'h atrás';
+      return Math.floor(diff/86400) + 'd atrás';
+    }
+
+    // Helper: clean content (remove HTML/BBCode)
+    function cleanContent(str){
+      return str
+        .replace(/\[.*?\]/g,'')
+        .replace(/<[^>]*>/g,'')
+        .replace(/\{STEAM_CLAN_IMAGE\}[^\s]*/g,'')
+        .replace(/https?:\/\/[^\s]*/g,'')
+        .trim()
+        .substring(0, 200);
+    }
+
+    // Helper: get tag based on feedlabel
+    function getTag(item){
+      const label = (item.feedlabel || '').toLowerCase();
+      const author = (item.author || '').toLowerCase();
+      if(label.includes('community')) return {cls:'tag-community', text:'Comunidade'};
+      if(label.includes('steam') || author.includes('valve')) return {cls:'tag-valve', text:'Valve Oficial'};
+      return {cls:'tag-update', text: item.feedlabel || 'CS2'};
+    }
+
+    // Helper: try to extract image from content
+    function getImage(item){
+      // Try to find image URL in contents
+      const imgMatch = item.contents.match(/https?:\/\/[^\s"'\]]+\.(jpg|jpeg|png|gif|webp)/i);
+      if(imgMatch) return imgMatch[0];
+      // Try STEAM_CLAN_IMAGE pattern
+      const clanMatch = item.contents.match(/\{STEAM_CLAN_IMAGE\}([^\s\[\]"]+)/);
+      if(clanMatch) return 'https://clan.cloudflare.steamstatic.com/images/' + clanMatch[1];
+      return null;
+    }
+
+    // Build hero (first news)
+    const hero = news[0];
+    const heroTag = getTag(hero);
+    const heroImg = getImage(hero);
+    const heroContent = cleanContent(hero.contents);
+
+    let html = '<div class="feed-label">Destaque</div>';
+    html += `<a href="${hero.url}" target="_blank" class="news-hero">`;
+    if(heroImg){
+      html += `<img class="news-hero-img" src="${heroImg}" alt="" onerror="this.style.display='none'">`;
+    }
+    html += `<div class="news-hero-body">
+      <div class="news-tag ${heroTag.cls}">${heroTag.text}</div>
+      <h2>${hero.title}</h2>
+      <p>${heroContent}${heroContent.length >= 200 ? '...' : ''}</p>
+      <div class="news-meta">
+        <span>${timeAgo(hero.date)}</span>
+        <div class="news-meta-dot"></div>
+        <span>${hero.author || 'Valve'}</span>
+        <div class="news-meta-dot"></div>
+        <span class="news-source">${hero.feedlabel || 'Steam'}</span>
+      </div>
+    </div></a>`;
+
+    // Build list (remaining news)
+    html += '<div class="feed-label" style="margin-top:24px">Últimas Notícias</div><div class="news-list">';
+
+    for(let i = 1; i < news.length; i++){
+      const item = news[i];
+      const tag = getTag(item);
+      const content = cleanContent(item.contents);
+
+      html += `<a href="${item.url}" target="_blank" class="news-item">
+        <div class="news-item-body">
+          <div class="news-tag ${tag.cls}">${tag.text}</div>
+          <h3>${item.title}</h3>
+          <div class="news-meta">
+            <span>${timeAgo(item.date)}</span>
+            <div class="news-meta-dot"></div>
+            <span>${item.author || 'Valve'}</span>
+            <div class="news-meta-dot"></div>
+            <span class="news-source">${item.feedlabel || 'Steam'}</span>
+          </div>
+        </div>
+      </a>`;
+    }
+
+    html += '</div>';
+    feed.innerHTML = html;
+
+  } catch(err){
+    feed.innerHTML = `<div class="loading" style="color:var(--red)">Erro ao carregar notícias: ${err.message}<br><br><button onclick="loadNews()" style="padding:8px 20px;border-radius:8px;background:var(--green);color:#000;border:none;font-weight:700;cursor:pointer">Tentar novamente</button></div>`;
+  }
+}
+
+// Load news on page load
+loadNews();
+
+// Auto-refresh every 5 minutes
+setInterval(loadNews, 300000);
+</script>
+
+</body>
+</html>
