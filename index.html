@@ -48,6 +48,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:300px;background:linear-gradient(180deg,rgba(196,169,125,.06) 0%,transparent 100%);pointer-events:none;z-index:1}
 #heroSandCanvas{position:absolute;inset:0;z-index:2;pointer-events:none}
 .hero-content{position:relative;z-index:3;max-width:650px;margin:0 auto}
+.hero .scoreboard-section{max-width:900px;margin:30px auto 0;padding:0 16px}
 .hero h1{font-size:clamp(28px,4.5vw,48px);font-weight:800;line-height:1.08;letter-spacing:-.04em;color:var(--sand-xl);margin-bottom:14px}
 .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--sand),var(--gold),var(--sand-l));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 5s linear infinite}
 @keyframes shimmer{0%{background-position:0% center}100%{background-position:200% center}}
@@ -217,15 +218,8 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
       <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(196,169,125,.3) 0%,rgba(212,166,72,.15) 35%,rgba(196,169,125,.05) 60%,transparent 80%);animation:agentGlow 4s ease-in-out infinite;pointer-events:none"></div>
       <img src="https://static.wixstatic.com/media/874864_00b48579d99c45b7a4420bd005bd501a~mv2.png/v1/fill/w_471,h_600,al_c,lg_1,q_85,enc_auto/874864_00b48579d99c45b7a4420bd005bd501a~mv2.png" alt="CS2 Agent" style="width:160px;height:auto;display:block;position:relative;z-index:1;filter:drop-shadow(0 6px 20px rgba(0,0,0,.5));animation:agentFloat 6s ease-in-out infinite">
     </div>
+    <p style="font-size:clamp(13px,1.5vw,16px);line-height:1.7;color:var(--t2);max-width:480px;margin:0 auto">Atualizações, patches, torneios e novidades do CS2 — ao vivo.</p>
   </div>
-</section>
-
-<div class="line-sep"></div>
-
-<!-- NEWS AREA — lighter background -->
-<div class="content-area">
-<div class="content">
-  <div id="newsFeed"><div class="loading"><div class="spinner"></div><div>Carregando notícias...</div></div></div>
 
   <!-- LIVE ESPORTS SCOREBOARD -->
   <div class="scoreboard-section reveal">
@@ -255,10 +249,15 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
       </div>
     </div>
   </div>
+</section>
 
-  <div style="text-align:center;padding:32px 0 16px">
-    <p style="font-size:clamp(13px,1.5vw,16px);line-height:1.7;color:var(--t2);max-width:480px;margin:0 auto;font-style:italic;opacity:.8">Atualizações, patches, torneios e novidades do CS2 — ao vivo.</p>
-  </div>
+<div class="line-sep"></div>
+
+<!-- NEWS AREA — lighter background -->
+<div class="content-area">
+<div class="content">
+
+  <div id="newsFeed"><div class="loading"><div class="spinner"></div><div>Carregando notícias...</div></div></div>
 
   <!-- VIDEOS -->
   <div class="video-section reveal">
