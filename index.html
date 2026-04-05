@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flow Portal — Notícias CS2</title>
+<title>Portal FlowSkins — Notícias CS2</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -55,28 +55,16 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 
 /* ═══ NAVBAR — REMOVED, using service bar only ═══ */
 
-/* ═══ HERO BANNER ═══ */
-.hero{padding:80px 0 0;position:relative;overflow:hidden;text-align:center}
+/* ═══ HERO ═══ */
+.hero{padding:80px 32px 40px;position:relative;overflow:hidden;text-align:center}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:300px;background:linear-gradient(180deg,rgba(196,169,125,.06) 0%,transparent 100%);pointer-events:none;z-index:1}
-
-.banner-container{position:relative;max-width:1200px;margin:0 auto;height:420px;overflow:hidden}
-
-/* Images layout */
-.banner-images{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
-.banner-img{position:absolute;object-fit:contain;filter:drop-shadow(0 8px 30px rgba(0,0,0,.5));transition:transform .6s cubic-bezier(.16,1,.3,1)}
-.banner-img-left{left:5%;top:50%;transform:translateY(-50%);height:85%;z-index:2;max-height:360px}
-.banner-img-right{right:5%;top:50%;transform:translateY(-50%);height:85%;z-index:2;max-height:360px}
-.banner-img-center{left:50%;top:50%;transform:translate(-50%,-50%);width:45%;z-index:1;max-width:500px}
-
-/* Sand storm overlay — intense */
-#heroSandCanvas{position:absolute;inset:0;z-index:4;pointer-events:none}
-
-/* Bottom gradient fade into background */
-.banner-fade{position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to top,var(--bg),transparent);z-index:5;pointer-events:none}
-
-/* Subtitle under banner */
-.hero-sub{position:relative;z-index:6;padding:20px 32px 40px;text-align:center}
-.hero-sub p{font-size:clamp(13px,1.5vw,16px);line-height:1.7;color:var(--t2);max-width:480px;margin:0 auto}
+#heroSandCanvas{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hero-content{position:relative;z-index:3;max-width:650px;margin:0 auto}
+.hero h1{font-size:clamp(28px,4.5vw,48px);font-weight:800;line-height:1.08;letter-spacing:-.04em;color:var(--sand-xl);margin-bottom:14px}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--sand),var(--gold),var(--sand-l));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 5s linear infinite}
+@keyframes shimmer{0%{background-position:0% center}100%{background-position:200% center}}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:100px;background:rgba(196,169,125,.08);border:1px solid rgba(196,169,125,.15);font-size:10px;font-weight:700;color:var(--sand);margin-bottom:24px;letter-spacing:.06em;text-transform:uppercase;font-family:'Space Mono',monospace}
+.hero p{font-size:clamp(13px,1.5vw,16px);line-height:1.7;color:var(--t2);max-width:480px;margin:0 auto}
 
 .line-sep{height:1px;background:linear-gradient(90deg,transparent,var(--sand),rgba(196,169,125,.3),var(--sand),transparent);background-size:200% 100%;animation:sweep 4s linear infinite;opacity:.4}
 @keyframes sweep{0%{background-position:200% 0}100%{background-position:-200% 0}}
@@ -156,9 +144,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 @media(max-width:768px){
   .service-bar{gap:2px;padding:6px 6px 6px}.service-pill{font-size:9px;padding:3px 9px}
   .eco-hub{margin-top:20px;font-size:8px}
-  .hero{padding:70px 0 0}.banner-container{height:280px}
-  .banner-img-left,.banner-img-right{height:70%;max-height:220px}
-  .banner-img-center{width:55%}
+  .hero{padding:70px 16px 30px}
   .content{padding:24px 16px}
   .news-hero-img,.modal-img{height:220px}
   .news-grid,.video-grid{grid-template-columns:1fr}
@@ -198,18 +184,12 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
   <div class="eco-hub" id="ecoHub">ECOSSISTEMA FLOW</div>
 </div>
 
-<!-- HERO BANNER -->
+<!-- HERO -->
 <section class="hero">
-  <div class="banner-container">
-    <div class="banner-images">
-      <img class="banner-img banner-img-left" src="https://static.wixstatic.com/media/874864_ad1ad11cbdbc4e989fe53be8a19b4cdb~mv2.png/v1/fill/w_440,h_600,al_c,q_85,enc_auto/874864_ad1ad11cbdbc4e989fe53be8a19b4cdb~mv2.png" alt="">
-      <img class="banner-img banner-img-center" src="https://static.wixstatic.com/media/874864_84bd1a103aa24251a7d1b13d078b6223~mv2.png/v1/fill/w_600,h_328,al_c,lg_1,q_85,enc_auto/874864_84bd1a103aa24251a7d1b13d078b6223~mv2.png" alt="">
-      <img class="banner-img banner-img-right" src="https://static.wixstatic.com/media/874864_7a14eaf569a74323ab6491e289c946b8~mv2.png/v1/fill/w_491,h_600,al_c,q_85,enc_auto/874864_7a14eaf569a74323ab6491e289c946b8~mv2.png" alt="">
-    </div>
-    <canvas id="heroSandCanvas"></canvas>
-    <div class="banner-fade"></div>
-  </div>
-  <div class="hero-sub">
+  <canvas id="heroSandCanvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-tag">Ecossistema Flow</div>
+    <h1><em>Portal FlowSkins</em></h1>
     <p>Atualizações, patches, torneios e novidades do CS2 — ao vivo.</p>
   </div>
 </section>
@@ -357,10 +337,10 @@ const hctx=hsc.getContext('2d');
 let stormParts=[];
 
 function resizeHeroCanvas(){
-  const c=hsc.parentElement;
+  const c=hsc.closest('.hero');
   hsc.width=c.offsetWidth*2;hsc.height=c.offsetHeight*2;
   hsc.style.width=c.offsetWidth+'px';hsc.style.height=c.offsetHeight+'px';
-  hctx.scale(2,2);
+  hctx.setTransform(2,0,0,2,0,0);
 }
 resizeHeroCanvas();
 addEventListener('resize',resizeHeroCanvas);
