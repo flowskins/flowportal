@@ -51,6 +51,8 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .hero h1{font-size:clamp(28px,4.5vw,48px);font-weight:800;line-height:1.08;letter-spacing:-.04em;color:var(--sand-xl);margin-bottom:14px}
 .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--sand),var(--gold),var(--sand-l));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 5s linear infinite}
 @keyframes shimmer{0%{background-position:0% center}100%{background-position:200% center}}
+@keyframes agentGlow{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.6}50%{transform:translate(-50%,-50%) scale(1.3);opacity:1}}
+@keyframes agentFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .hero p{font-size:clamp(13px,1.5vw,16px);line-height:1.7;color:var(--t2);max-width:480px;margin:0 auto}
 
 /* ═══ NEWS AREA — lighter brown with glows ═══ */
@@ -72,7 +74,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 
 /* ═══ NEWS ═══ */
 .news-hero{display:block;border-radius:16px;overflow:hidden;background:var(--bg2);border:1px solid var(--border);margin-bottom:32px;text-decoration:none;color:inherit;transition:all .4s;position:relative;cursor:pointer}
-.news-hero:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.news-hero:hover{border-color:rgba(196,169,125,.2);transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(196,169,125,.06)}
 .news-hero-img{width:100%;height:360px;object-fit:cover;display:block;background:var(--bg3)}
 .news-hero-overlay{position:absolute;bottom:0;left:0;right:0;padding:32px;background:linear-gradient(to top,rgba(20,17,13,.95) 0%,rgba(20,17,13,.5) 70%,transparent 100%)}
 .news-tag{font-size:9px;font-weight:700;padding:4px 12px;border-radius:6px;text-transform:uppercase;letter-spacing:.06em;font-family:'Space Mono',monospace;display:inline-block;margin-bottom:10px}
@@ -85,7 +87,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 
 .news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;margin-bottom:48px}
 .news-card{display:flex;flex-direction:column;border-radius:14px;overflow:hidden;background:var(--bg2);border:1px solid var(--border);text-decoration:none;color:inherit;transition:all .4s;cursor:pointer}
-.news-card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:var(--shadow)}
+.news-card:hover{border-color:rgba(196,169,125,.15);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.3),0 0 20px rgba(196,169,125,.04)}
 .news-card-img{width:100%;height:185px;object-fit:cover;display:block;background:var(--bg3)}
 .news-card-body{padding:20px;flex:1;display:flex;flex-direction:column}
 .news-card h3{font-size:15px;font-weight:700;line-height:1.35;margin-bottom:8px;color:var(--sand-xl);flex:1}
@@ -129,6 +131,13 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 
 .reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
+.news-grid .reveal:nth-child(2){transition-delay:.1s}
+.news-grid .reveal:nth-child(3){transition-delay:.2s}
+.news-grid .reveal:nth-child(4){transition-delay:.3s}
+.news-grid .reveal:nth-child(5){transition-delay:.4s}
+.news-grid .reveal:nth-child(6){transition-delay:.5s}
+.news-grid .reveal:nth-child(7){transition-delay:.6s}
+.news-grid .reveal:nth-child(8){transition-delay:.7s}
 
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--sand),var(--gold));border-radius:3px}
@@ -181,7 +190,10 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
   <canvas id="heroSandCanvas"></canvas>
   <div class="hero-content">
     <h1><em>Portal FlowSkins</em></h1>
-    <img src="https://static.wixstatic.com/media/874864_00b48579d99c45b7a4420bd005bd501a~mv2.png/v1/fill/w_471,h_600,al_c,lg_1,q_85,enc_auto/874864_00b48579d99c45b7a4420bd005bd501a~mv2.png" alt="CS2 Agent" style="width:160px;height:auto;margin:16px auto 20px;display:block;filter:drop-shadow(0 6px 20px rgba(0,0,0,.5))">
+    <div style="position:relative;display:inline-block;margin:16px auto 20px">
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(196,169,125,.25) 0%,rgba(212,166,72,.1) 40%,transparent 70%);animation:agentGlow 4s ease-in-out infinite;pointer-events:none"></div>
+      <img src="https://static.wixstatic.com/media/874864_00b48579d99c45b7a4420bd005bd501a~mv2.png/v1/fill/w_471,h_600,al_c,lg_1,q_85,enc_auto/874864_00b48579d99c45b7a4420bd005bd501a~mv2.png" alt="CS2 Agent" style="width:160px;height:auto;display:block;position:relative;z-index:1;filter:drop-shadow(0 6px 20px rgba(0,0,0,.5));animation:agentFloat 6s ease-in-out infinite">
+    </div>
     <p>Atualizações, patches, torneios e novidades do CS2 — ao vivo.</p>
   </div>
 </section>
@@ -197,9 +209,9 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
   <div class="video-section reveal">
     <div class="sec-label">Vídeos em Destaque</div>
     <div class="video-grid">
-      <div class="video-wrap"><iframe class="video-iframe" src="https://www.youtube.com/embed/edYCtaNueQY?rel=0" title="CS2" allowfullscreen loading="lazy"></iframe><div class="video-info"><h3>Counter-Strike 2 — Trailer Oficial</h3><p>Valve • Trailer</p></div></div>
-      <div class="video-wrap"><iframe class="video-iframe" src="https://www.youtube.com/embed/9hBTueJMfLw?rel=0" title="CS2" allowfullscreen loading="lazy"></iframe><div class="video-info"><h3>Evolução do Mirage ao longo dos anos</h3><p>Mapas e gameplay</p></div></div>
-      <div class="video-wrap"><iframe class="video-iframe" src="https://www.youtube.com/embed/GVS5yFChHMw?rel=0" title="CS2" allowfullscreen loading="lazy"></iframe><div class="video-info"><h3>As skins mais caras do CS2</h3><p>Mercado e colecionáveis</p></div></div>
+      <div class="video-wrap"><iframe class="video-iframe" src="https://www.youtube.com/embed/edYCtaNueQY?rel=0" title="CS2" allowfullscreen loading="lazy"></iframe><div class="video-info"><h3>Counter-Strike 2 — Trailer Oficial de Lançamento</h3><p>Valve • Trailer</p></div></div>
+      <div class="video-wrap"><iframe class="video-iframe" src="https://www.youtube.com/embed/WdnBxwmAcjQ?rel=0" title="CS2" allowfullscreen loading="lazy"></iframe><div class="video-info"><h3>CS2 — Respondendo à comunidade</h3><p>Valve • Atualizações</p></div></div>
+      <div class="video-wrap"><iframe class="video-iframe" src="https://www.youtube.com/embed/bEr__yBRJGs?rel=0" title="CS2" allowfullscreen loading="lazy"></iframe><div class="video-info"><h3>CS2 — Corrida Armamentista</h3><p>Valve • Gameplay</p></div></div>
     </div>
   </div>
 </div>
@@ -465,19 +477,19 @@ function getTag(item){
   return{c:'tag-update',t:item.feedlabel||'CS2'};
 }
 
-// ═══ STATIC NEWS — real from counter-strike.net ═══
+// ═══ STATIC NEWS — real & updated april 2026 ═══
 function staticNews(){
   const n=Math.floor(Date.now()/1000);
   return[
-    {title:'Beta do Animgraph 2',contents:'Estamos lançando hoje um beta que atualiza o sistema de animações do CS2 para o Animgraph 2, que reduz os custos de processamento e rede associados a animações.',date:n-345600,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/528750051218948816',_img:csImg[0]},
-    {title:'Armas, aprendizados e alternativas',contents:'Seja ao recarregar ou ao jogar um modo personalizado, a atualização de hoje fará você pensar bastante. Ao recarregar a sua arma no CS2, a munição restante no pente é devolvida às suas reservas.',date:n-432000,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/532126482488623353',_img:csImg[1]},
-    {title:'A Mão Morta',contents:'Apresentamos hoje a Coleção Mão Morta, com 17 revestimentos criados por membros da comunidade e 22 revestimentos criados pela Valve — incluindo novas skins para facas e luvas.',date:n-518400,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/518615049848225858',_img:csImg[2]},
-    {title:'Counter-Strike sem limites',contents:'Hoje temos uma atualização grande. Novas armas, novos mapas, novo sistema de ranks e muitas melhorias de qualidade de vida que a comunidade vinha pedindo há tempos.',date:n-604800,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/511855214544814488',_img:csImg[3]},
-    {title:'Apresentando o CS Rating',contents:'O novo sistema de classificação do CS2 chegou. O CS Rating substitui o antigo sistema de patentes e traz uma experiência competitiva mais transparente e justa para todos os jogadores.',date:n-691200,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/4491737389498543702',_img:csImg[4]},
-    {title:'Uma questão de tempo',contents:'A atualização de hoje traz ajustes significativos no sistema de economia das partidas competitivas, novos tempos de rodada e mudanças no comportamento das granadas.',date:n-777600,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/4478573011804498748',_img:csImg[5]},
-    {title:'Dinheiro bem gasto',contents:'Novo case chegando ao CS2 com skins exclusivas criadas pela comunidade e pela Valve. Confira os novos revestimentos para AK-47, AWP, M4A1-S e muito mais.',date:n-864000,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/4464752152455593428',_img:csImg[6]},
-    {title:'Jogando limpo',contents:'O VAC Live recebeu uma grande atualização. O novo sistema anti-cheat agora utiliza machine learning avançado para detectar trapaceiros em tempo real durante as partidas.',date:n-950400,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/4449543263133879118',_img:csImg[7]},
-    {title:'De olho no alvo',contents:'Atualização de balanceamento de armas: ajustes no spray da M4A1-S, mudanças na velocidade de escopo da AWP e melhorias na precisão do Deagle em movimento.',date:n-1036800,author:'Valve',feedlabel:'CS2 Updates',url:'https://www.counter-strike.net/newsentry/4426755046729544316',_img:csImg[8]},
+    {title:'Beta do Animgraph 2 — Valve recria todas as animações do CS2',contents:'A Valve lançou um beta que migra o sistema de animações do CS2 para o Animgraph 2. Todas as animações em terceira pessoa foram refeitas, reduzindo custos de CPU e rede. Animações de facas como Butterfly e Karambit foram completamente refeitas.',date:n-345600,author:'Valve',feedlabel:'Atualização',url:'https://www.counter-strike.net/newsentry/528750051218948816',_img:csImg[0]},
+    {title:'Detalhes da atualização de 01/04/2026',contents:'Atualização inclui ajustes nas transições de agachamento no ar, refatoração da altura do jogador em rampas e melhorias no sistema de oclusão de jogadores usando GPU para evitar clipping através de paredes finas.',date:n-345600,author:'Valve',feedlabel:'Patch Notes',url:'https://www.counter-strike.net/newsentry/528750051218948816',_img:csImg[1]},
+    {title:'Armas, aprendizados e alternativas — novo sistema de recarga',contents:'A munição restante no pente agora é devolvida às suas reservas ao recarregar. A mudança afeta profundamente o meta competitivo, especialmente para AWP e rifles. Reservas de munição foram ajustadas para várias armas.',date:n-1555200,author:'Valve',feedlabel:'Atualização',url:'https://www.counter-strike.net/newsentry/532126482488623353',_img:csImg[1]},
+    {title:'PGL Bucharest 2026 — Swiss Stage: resultados e destaques',contents:'Primeiro grande evento com o novo sistema de recarga. Times como FUT Esports e 3DMAX se destacam. Playoffs acontecem entre 10 e 11 de abril. IEM Rio 2026 começa logo em seguida no dia 13.',date:n-86400,author:'PGL',feedlabel:'Esports',url:'https://www.counter-strike.net/news',_img:csImg[4]},
+    {title:'A Mão Morta — nova coleção com 39 skins',contents:'Nova coleção com 17 revestimentos criados pela comunidade e 22 pela Valve. Inclui novas skins para facas, luvas e armas populares como AK-47 e M4A1-S. Disponível agora no jogo.',date:n-2160000,author:'Valve',feedlabel:'Atualização',url:'https://www.counter-strike.net/newsentry/518615049848225858',_img:csImg[2]},
+    {title:'Counter-Strike sem limites — maior update de 2026',contents:'Novas armas, novos mapas, sistema de ranks renovado e muitas melhorias de qualidade de vida. Uma das maiores atualizações já lançadas para o CS2 desde o lançamento.',date:n-2764800,author:'Valve',feedlabel:'Atualização',url:'https://www.counter-strike.net/newsentry/511855214544814488',_img:csImg[3]},
+    {title:'Novo cliente e sistema de missões — operação a caminho?',contents:'Código do CS2 revela planos da Valve para um novo cliente e sistema de missões completamente redesenhado. A comunidade especula que uma nova operação está sendo preparada com progressão e recompensas.',date:n-4492800,author:'Valve',feedlabel:'Vazamento',url:'https://www.counter-strike.net/news',_img:csImg[5]},
+    {title:'Apresentando o CS Rating — novo sistema competitivo',contents:'O CS Rating substitui o antigo sistema de patentes com uma experiência competitiva mais transparente e justa. Agora os jogadores podem acompanhar sua evolução com métricas detalhadas.',date:n-3456000,author:'Valve',feedlabel:'Atualização',url:'https://www.counter-strike.net/newsentry/4491737389498543702',_img:csImg[4]},
+    {title:'IEM Rio 2026 confirmado — Brasil recebe major em abril',contents:'A Intel Extreme Masters chega ao Rio de Janeiro com os melhores times do mundo. O evento começa dia 13 de abril com fase de grupos e promete ser o maior torneio de CS2 no Brasil.',date:n-172800,author:'ESL',feedlabel:'Esports',url:'https://www.counter-strike.net/news',_img:csImg[6]},
   ];
 }
 
