@@ -8,176 +8,151 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#F5F0E8;--bg2:#EDE7DB;--bg3:#E5DFD3;--white:#FDFBF7;
-  --dark:#1A1A2E;--dark2:#2D2D44;--dark3:#3D3D56;
-  --purple:#7C3AED;--purple-l:#8B5CF6;--cyan:#0891B2;--cyan-l:#06B6D4;
-  --amber:#D97706;--amber-l:#F59E0B;--sand:#C4A97D;--sand-l:#D4BC94;
-  --red:#DC2626;--green:#16A34A;
-  --t1:#1A1A2E;--t2:#4A4A6A;--t3:#7A7A9A;--t4:#9A9AB0;
-  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);
-  --shadow:0 2px 12px rgba(0,0,0,.06);
-  --shadow-lg:0 8px 30px rgba(0,0,0,.1);
+  --bg:#14110D;--bg2:#1C1813;--bg3:#241F18;--bg4:#2E2820;
+  --sand:#C4A97D;--sand-l:#D4BC94;--sand-xl:#E8D5B0;--gold:#D4A648;
+  --purple:#8B5CF6;--purple-l:#A78BFA;--cyan:#00D4AA;
+  --red:#EF4444;--green:#22C55E;--amber:#F59E0B;
+  --t1:#E8DFD0;--t2:#A89880;--t3:#7A6E5C;--t4:#5A5040;
+  --border:rgba(196,169,125,.1);--border2:rgba(196,169,125,.18);
+  --shadow:0 4px 20px rgba(0,0,0,.3);
 }
 html,body{overflow-x:hidden;scroll-behavior:smooth}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased}
 
+/* ═══ SAND CANVAS ═══ */
+#sandCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ═══ NOISE ═══ */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1}
+
 /* ═══ SERVICE BAR ═══ */
-.service-bar{
-  position:fixed;top:0;left:0;right:0;z-index:1001;
-  display:flex;align-items:center;justify-content:center;gap:6px;
-  padding:6px 16px;background:var(--dark);
-}
-.service-pill{padding:4px 14px;border-radius:6px;text-decoration:none;font-weight:600;font-size:11px;transition:all .3s;display:flex;align-items:center;gap:5px}
+.service-bar{position:fixed;top:0;left:0;right:0;z-index:1001;display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 16px;background:rgba(20,17,13,.95);border-bottom:1px solid var(--border)}
+.service-pill{padding:5px 14px;border-radius:7px;text-decoration:none;font-weight:600;font-size:11px;transition:all .3s;display:flex;align-items:center;gap:5px;border:1px solid transparent}
 .service-pill:hover{transform:translateY(-1px)}
-.pill-price{color:#34D399;background:rgba(52,211,153,.08)}.pill-price:hover{background:rgba(52,211,153,.2)}
-.pill-mid{color:#A78BFA;background:rgba(167,139,250,.08)}.pill-mid:hover{background:rgba(167,139,250,.2)}
-.pill-gestor{color:#22D3EE;background:rgba(34,211,238,.08)}.pill-gestor:hover{background:rgba(34,211,238,.2)}
-.pill-store{color:#FBBF24;background:rgba(251,191,36,.08)}.pill-store:hover{background:rgba(251,191,36,.2)}
+.pill-price{color:var(--green);background:rgba(34,197,94,.05)}.pill-price:hover{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.15)}
+.pill-mid{color:var(--purple-l);background:rgba(139,92,246,.05)}.pill-mid:hover{background:rgba(139,92,246,.12);border-color:rgba(139,92,246,.15)}
+.pill-gestor{color:var(--cyan);background:rgba(0,212,170,.05)}.pill-gestor:hover{background:rgba(0,212,170,.12);border-color:rgba(0,212,170,.15)}
+.pill-store{color:var(--amber);background:rgba(245,158,11,.05)}.pill-store:hover{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.15)}
 .pill-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
 
 /* ═══ NAVBAR ═══ */
-.navbar{
-  position:fixed;top:32px;left:0;right:0;z-index:1000;
-  padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;
-  background:rgba(253,251,247,.92);backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);box-shadow:var(--shadow);
-}
+.navbar{position:fixed;top:33px;left:0;right:0;z-index:1000;padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;background:rgba(20,17,13,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
 .nav-left{display:flex;align-items:center;gap:14px}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo-icon{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--purple),var(--cyan-l));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff}
-.nav-logo-text{font-weight:800;font-size:18px;color:var(--dark);letter-spacing:-.03em}
-.nav-logo-text span{color:var(--purple)}
-.nav-sep{width:1px;height:24px;background:var(--border2)}
-.nav-badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;background:var(--bg2);color:var(--t2);letter-spacing:.04em;font-family:'Space Mono',monospace}
+.nav-logo-icon{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--sand),var(--gold));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:var(--bg);box-shadow:0 0 20px rgba(212,166,72,.2)}
+.nav-logo-text{font-weight:800;font-size:17px;color:var(--sand-xl);letter-spacing:-.02em}
+.nav-logo-text span{color:var(--sand)}
+.nav-badge{font-size:9px;font-weight:700;padding:3px 10px;border-radius:6px;background:rgba(196,169,125,.1);color:var(--sand);text-transform:uppercase;letter-spacing:.06em;font-family:'Space Mono',monospace;border:1px solid rgba(196,169,125,.15)}
 .nav-right{display:flex;align-items:center;gap:14px}
 .nav-time{font-family:'Space Mono',monospace;font-size:12px;color:var(--t3)}
-.nav-live{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.06em}
-.nav-live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 2s ease-in-out infinite}
+.nav-live{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--sand);text-transform:uppercase;letter-spacing:.06em}
+.nav-live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--sand);box-shadow:0 0 8px var(--sand);animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ═══ HERO — MIRAGE ═══ */
-.hero{
-  padding:120px 32px 48px;position:relative;overflow:hidden;
-  background:linear-gradient(165deg,#C4A97D 0%,#D4BC94 30%,#E5DFD3 60%,var(--bg) 100%);
-}
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:url('https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/ss_d196d945c6170e9cadbb23a1b351261c52032421.600x338.jpg') center/cover no-repeat;
-  opacity:.12;filter:blur(2px);
-}
-.hero::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:120px;
-  background:linear-gradient(to top,var(--bg),transparent);
-}
-.hero-content{position:relative;z-index:2;max-width:700px;margin:0 auto;text-align:center}
-.hero h1{font-size:clamp(28px,4.5vw,48px);font-weight:800;line-height:1.1;letter-spacing:-.04em;color:var(--dark);margin-bottom:14px}
-.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{font-size:clamp(14px,1.5vw,16px);line-height:1.7;color:var(--dark2);max-width:480px;margin:0 auto}
-.hero-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:100px;background:rgba(255,255,255,.7);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.5);font-size:11px;font-weight:700;color:var(--purple);margin-bottom:20px;letter-spacing:.04em;text-transform:uppercase;font-family:'Space Mono',monospace}
-.hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--purple);animation:pulse 2s ease-in-out infinite}
+/* ═══ HERO ═══ */
+.hero{padding:125px 32px 50px;position:relative;overflow:hidden;text-align:center}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:300px;background:linear-gradient(180deg,rgba(196,169,125,.06) 0%,transparent 100%);pointer-events:none}
+.hero-content{position:relative;z-index:2;max-width:650px;margin:0 auto}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:100px;background:rgba(196,169,125,.08);border:1px solid rgba(196,169,125,.15);font-size:10px;font-weight:700;color:var(--sand);margin-bottom:24px;letter-spacing:.06em;text-transform:uppercase;font-family:'Space Mono',monospace}
+.hero-tag::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--sand);animation:pulse 2s ease-in-out infinite}
+.hero h1{font-size:clamp(28px,4.5vw,48px);font-weight:800;line-height:1.08;letter-spacing:-.04em;color:var(--sand-xl);margin-bottom:14px}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--sand),var(--gold),var(--sand-l));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 5s linear infinite}
+@keyframes shimmer{0%{background-position:0% center}100%{background-position:200% center}}
+.hero p{font-size:clamp(13px,1.5vw,16px);line-height:1.7;color:var(--t2);max-width:480px;margin:0 auto}
+
+/* ═══ SEPARATOR ═══ */
+.line-sep{height:1px;background:linear-gradient(90deg,transparent,var(--sand),rgba(196,169,125,.3),var(--sand),transparent);background-size:200% 100%;animation:sweep 4s linear infinite;opacity:.4}
+@keyframes sweep{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 /* ═══ CONTENT ═══ */
 .content{max-width:1200px;margin:0 auto;padding:40px 32px;position:relative;z-index:2}
-
-.sec-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:16px;font-family:'Space Mono',monospace;display:flex;align-items:center;gap:8px}
-.sec-label::before{content:'';width:14px;height:3px;background:linear-gradient(90deg,var(--purple),var(--cyan-l));border-radius:2px}
+.sec-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--sand);margin-bottom:16px;font-family:'Space Mono',monospace;display:flex;align-items:center;gap:8px}
+.sec-label::before{content:'';width:14px;height:3px;background:linear-gradient(90deg,var(--sand),var(--gold));border-radius:2px}
 
 /* ═══ LOADING ═══ */
 .loading{text-align:center;padding:60px 20px;color:var(--t3)}
-.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--sand);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ═══ NEWS HERO ═══ */
-.news-hero{
-  display:block;border-radius:16px;overflow:hidden;
-  background:var(--white);border:1px solid var(--border);
-  margin-bottom:32px;text-decoration:none;color:inherit;
-  transition:all .3s;box-shadow:var(--shadow);position:relative;
-}
-.news-hero:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
-.news-hero-img{width:100%;height:360px;object-fit:cover;display:block;background:var(--bg2)}
-.news-hero-overlay{position:absolute;bottom:0;left:0;right:0;padding:32px;background:linear-gradient(to top,rgba(26,26,46,.92) 0%,rgba(26,26,46,.5) 70%,transparent 100%);color:#fff}
+.news-hero{display:block;border-radius:16px;overflow:hidden;background:var(--bg2);border:1px solid var(--border);margin-bottom:32px;text-decoration:none;color:inherit;transition:all .4s;position:relative}
+.news-hero:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.news-hero-img{width:100%;height:360px;object-fit:cover;display:block;background:var(--bg3)}
+.news-hero-overlay{position:absolute;bottom:0;left:0;right:0;padding:32px;background:linear-gradient(to top,rgba(20,17,13,.95) 0%,rgba(20,17,13,.5) 70%,transparent 100%)}
 .news-tag{font-size:9px;font-weight:700;padding:4px 12px;border-radius:6px;text-transform:uppercase;letter-spacing:.06em;font-family:'Space Mono',monospace;display:inline-block;margin-bottom:10px}
-.tag-valve{background:rgba(139,92,246,.8);color:#fff}
-.tag-community{background:rgba(6,182,212,.8);color:#fff}
-.tag-update{background:rgba(59,130,246,.8);color:#fff}
-.news-hero h2{font-size:clamp(18px,2.5vw,26px);font-weight:800;line-height:1.2;letter-spacing:-.02em;margin-bottom:8px}
-.news-meta{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.7);flex-wrap:wrap}
-.news-meta.dark{color:var(--t3)}
-.meta-dot{width:3px;height:3px;border-radius:50%;background:currentColor;opacity:.5}
+.tag-valve{background:rgba(196,169,125,.2);color:var(--sand-xl)}
+.tag-community{background:rgba(0,212,170,.15);color:var(--cyan)}
+.tag-update{background:rgba(139,92,246,.15);color:var(--purple-l)}
+.news-hero h2{font-size:clamp(18px,2.5vw,26px);font-weight:800;line-height:1.2;letter-spacing:-.02em;margin-bottom:8px;color:var(--sand-xl)}
+.news-meta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t3);flex-wrap:wrap}
+.meta-dot{width:3px;height:3px;border-radius:50%;background:var(--t3)}
 
 /* ═══ NEWS GRID ═══ */
 .news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;margin-bottom:48px}
-
-.news-card{
-  display:flex;flex-direction:column;
-  border-radius:14px;overflow:hidden;
-  background:var(--white);border:1px solid var(--border);
-  text-decoration:none;color:inherit;
-  transition:all .3s;box-shadow:var(--shadow);
-}
-.news-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
-.news-card-img{width:100%;height:180px;object-fit:cover;display:block;background:var(--bg2)}
+.news-card{display:flex;flex-direction:column;border-radius:14px;overflow:hidden;background:var(--bg2);border:1px solid var(--border);text-decoration:none;color:inherit;transition:all .4s}
+.news-card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:var(--shadow)}
+.news-card-img{width:100%;height:185px;object-fit:cover;display:block;background:var(--bg3)}
 .news-card-body{padding:20px;flex:1;display:flex;flex-direction:column}
-.news-card h3{font-size:15px;font-weight:700;line-height:1.35;margin-bottom:8px;color:var(--dark);flex:1}
+.news-card h3{font-size:15px;font-weight:700;line-height:1.35;margin-bottom:8px;color:var(--sand-xl);flex:1}
 .news-card p{font-size:13px;line-height:1.5;color:var(--t3);margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
 /* ═══ VIDEOS ═══ */
 .video-section{margin:48px 0}
 .video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:20px}
-.video-wrap{
-  border-radius:14px;overflow:hidden;
-  background:var(--white);border:1px solid var(--border);
-  box-shadow:var(--shadow);transition:all .3s;
-}
-.video-wrap:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
-.video-iframe{width:100%;aspect-ratio:16/9;border:none;display:block;background:var(--dark)}
+.video-wrap{border-radius:14px;overflow:hidden;background:var(--bg2);border:1px solid var(--border);transition:all .4s}
+.video-wrap:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:var(--shadow)}
+.video-iframe{width:100%;aspect-ratio:16/9;border:none;display:block;background:var(--bg)}
 .video-info{padding:14px 18px}
-.video-info h3{font-size:14px;font-weight:700;color:var(--dark);margin-bottom:4px}
+.video-info h3{font-size:14px;font-weight:700;color:var(--sand-xl);margin-bottom:4px}
 .video-info p{font-size:12px;color:var(--t3)}
 
 /* ═══ FOOTER ═══ */
-.footer{border-top:1px solid var(--border);padding:40px 32px;text-align:center;background:var(--white);margin-top:48px}
+.footer{border-top:1px solid var(--border);padding:40px 32px;text-align:center;position:relative;z-index:2;margin-top:48px}
 .footer-brand{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px}
-.footer-icon{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--purple),var(--cyan-l));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff}
-.footer-brand span{font-size:13px;font-weight:600;color:var(--t2)}
+.footer-icon{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--sand),var(--gold));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--bg)}
+.footer-brand span{font-size:13px;font-weight:600;color:var(--t3)}
 .footer-links{display:flex;justify-content:center;gap:24px;margin-bottom:8px}
-.footer-links a{color:var(--t3);text-decoration:none;font-size:12px;transition:color .3s}
-.footer-links a:hover{color:var(--purple)}
+.footer-links a{color:var(--t4);text-decoration:none;font-size:12px;transition:color .3s}
+.footer-links a:hover{color:var(--sand)}
 .footer-copy{font-size:11px;color:var(--t4)}
 
 /* ═══ REVEALS ═══ */
 .reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
 
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--sand),var(--gold));border-radius:3px}
+
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:768px){
-  .navbar{padding:0 16px;height:48px;top:28px}
-  .service-bar{gap:2px;padding:4px 6px}.service-pill{font-size:9px;padding:3px 8px}
+  .navbar{padding:0 16px;height:48px;top:29px}
+  .service-bar{gap:2px;padding:4px 6px}.service-pill{font-size:9px;padding:3px 9px}
   .hero{padding:100px 16px 36px}
   .content{padding:24px 16px}
   .news-hero-img{height:220px}
   .news-grid{grid-template-columns:1fr}
   .video-grid{grid-template-columns:1fr}
-  .nav-time,.nav-badge,.nav-sep{display:none}
+  .nav-time,.nav-badge{display:none}
 }
 </style>
 </head>
 <body>
 
+<canvas id="sandCanvas"></canvas>
+
 <!-- SERVICE BAR -->
 <div class="service-bar">
-  <a href="https://price.flowskins.com.br" class="service-pill pill-price"><div class="pill-dot" style="background:#34D399"></div>FlowPrice</a>
+  <a href="https://price.flowskins.com.br" class="service-pill pill-price"><div class="pill-dot" style="background:#22C55E"></div>FlowPrice</a>
   <a href="https://mid.flowskins.com.br" class="service-pill pill-mid"><div class="pill-dot" style="background:#A78BFA"></div>FlowMid</a>
-  <a href="https://flowskins.com.br" class="service-pill pill-gestor"><div class="pill-dot" style="background:#22D3EE"></div>Gestor</a>
-  <a href="#" class="service-pill pill-store"><div class="pill-dot" style="background:#FBBF24"></div>Store</a>
+  <a href="https://flowskins.com.br" class="service-pill pill-gestor"><div class="pill-dot" style="background:#00D4AA"></div>Gestor</a>
+  <a href="#" class="service-pill pill-store"><div class="pill-dot" style="background:#F59E0B"></div>Store</a>
 </div>
 
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="nav-left">
     <a href="#" class="nav-logo"><div class="nav-logo-icon">F</div><div class="nav-logo-text">Flow<span>Portal</span></div></a>
-    <div class="nav-sep"></div>
     <div class="nav-badge">MIRAGE</div>
   </div>
   <div class="nav-right">
@@ -191,37 +166,34 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <div class="hero-content">
     <div class="hero-tag">Ecossistema Flow</div>
     <h1>O portal de notícias do <em>Counter-Strike 2</em></h1>
-    <p>Atualizações, patches, torneios e novidades — tudo em um lugar.</p>
+    <p>Atualizações, patches, torneios e novidades — direto da Valve, ao vivo.</p>
   </div>
 </section>
 
+<div class="line-sep"></div>
+
 <!-- CONTENT -->
 <div class="content">
-
-  <!-- NEWS -->
-  <div id="newsFeed">
-    <div class="loading"><div class="spinner"></div><div>Carregando notícias...</div></div>
-  </div>
+  <div id="newsFeed"><div class="loading"><div class="spinner"></div><div>Carregando notícias...</div></div></div>
 
   <!-- VIDEOS -->
   <div class="video-section reveal">
     <div class="sec-label">Vídeos em Destaque</div>
     <div class="video-grid">
       <div class="video-wrap">
-        <iframe class="video-iframe" src="https://www.youtube.com/embed/edYCtaNueQY?rel=0" title="CS2 Update" allowfullscreen loading="lazy"></iframe>
-        <div class="video-info"><h3>CS2 — Trailer Oficial</h3><p>Counter-Strike 2 • Valve</p></div>
+        <iframe class="video-iframe" src="https://www.youtube.com/embed/edYCtaNueQY?rel=0" title="CS2" allowfullscreen loading="lazy"></iframe>
+        <div class="video-info"><h3>Counter-Strike 2 — Trailer Oficial</h3><p>Valve • Trailer de lançamento</p></div>
       </div>
       <div class="video-wrap">
-        <iframe class="video-iframe" src="https://www.youtube.com/embed/TkTJaBee9yQ?rel=0" title="CS2 Gameplay" allowfullscreen loading="lazy"></iframe>
-        <div class="video-info"><h3>CS2: Tudo sobre o novo sistema de skins</h3><p>Gameplay e novidades</p></div>
+        <iframe class="video-iframe" src="https://www.youtube.com/embed/9hBTueJMfLw?rel=0" title="CS2 Mirage" allowfullscreen loading="lazy"></iframe>
+        <div class="video-info"><h3>CS2 — Evolução do Mirage ao longo dos anos</h3><p>Mapas e gameplay</p></div>
       </div>
       <div class="video-wrap">
-        <iframe class="video-iframe" src="https://www.youtube.com/embed/UKMq1HNfSBg?rel=0" title="CS2 Skins" allowfullscreen loading="lazy"></iframe>
-        <div class="video-info"><h3>Melhores jogadas da semana</h3><p>Highlights competitivo</p></div>
+        <iframe class="video-iframe" src="https://www.youtube.com/embed/GVS5yFChHMw?rel=0" title="CS2 Skins" allowfullscreen loading="lazy"></iframe>
+        <div class="video-info"><h3>As skins mais caras do CS2 em 2026</h3><p>Mercado e colecionáveis</p></div>
       </div>
     </div>
   </div>
-
 </div>
 
 <!-- FOOTER -->
@@ -236,6 +208,52 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 </footer>
 
 <script>
+// ═══ SAND PARTICLE SYSTEM ═══
+const canvas=document.getElementById('sandCanvas');
+const ctx=canvas.getContext('2d');
+let sandParticles=[];
+
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+
+class SandParticle{
+  constructor(){this.reset(true)}
+  reset(init){
+    this.x=init?Math.random()*canvas.width:-10;
+    this.y=Math.random()*canvas.height;
+    this.size=Math.random()*2+0.5;
+    this.speedX=Math.random()*1.5+0.5;
+    this.speedY=(Math.random()-.5)*0.8;
+    this.opacity=Math.random()*.25+.05;
+    this.wobble=Math.random()*Math.PI*2;
+    this.wobbleSpeed=Math.random()*.02+.005;
+    // Sand colors
+    const colors=['196,169,125','212,188,148','180,155,110','232,213,176','160,140,100'];
+    this.color=colors[Math.floor(Math.random()*colors.length)];
+  }
+  update(){
+    this.wobble+=this.wobbleSpeed;
+    this.x+=this.speedX;
+    this.y+=this.speedY+Math.sin(this.wobble)*0.3;
+    if(this.x>canvas.width+10)this.reset(false);
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${this.color},${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for(let i=0;i<120;i++){sandParticles.push(new SandParticle())}
+
+function animateSand(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  sandParticles.forEach(p=>{p.update();p.draw()});
+  requestAnimationFrame(animateSand);
+}
+animateSand();
+
 // ═══ CLOCK ═══
 function clock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+' BRT'}
 clock();setInterval(clock,60000);
@@ -244,8 +262,8 @@ clock();setInterval(clock,60000);
 const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}})},{threshold:.05});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// ═══ CS2 NEWS IMAGES ═══
-const csImages=[
+// ═══ CS2 IMAGES ═══
+const csImg=[
   'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/ss_d196d945c6170e9cadbb23a1b351261c52032421.600x338.jpg',
   'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/ss_796601d9d67faf53486eeb26d0724347cea67dde.600x338.jpg',
   'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/ss_d830cfd0550fbb64d80e803e93654ab545e4d65c.600x338.jpg',
@@ -254,104 +272,94 @@ const csImages=[
   'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/header.jpg'
 ];
 
+// ═══ STATIC NEWS (always works) ═══
+function staticNews(){
+  const n=Math.floor(Date.now()/1000);
+  return[
+    {title:'CS2 recebe atualização massiva: novo sistema de ranking e correções de bugs',contents:'A Valve lançou a maior atualização do ano para o Counter-Strike 2, com sistema de ranking renovado e otimização de performance em todos os mapas competitivos.',date:n-3200,author:'Valve',feedlabel:'CS2 Updates',url:'https://store.steampowered.com/news/app/730'},
+    {title:'Mirage ganha visual update: texturas 4K e iluminação dinâmica renovada',contents:'O mapa mais icônico do CS2 recebeu uma reformulação visual completa com texturas em alta resolução e sistema de iluminação baseado em ray tracing.',date:n-6400,author:'CS2 Team',feedlabel:'CS2 Updates',url:'https://store.steampowered.com/news/app/730'},
+    {title:'BLAST Premier 2026: NAVI e FaZe confirmados na grande final',contents:'As duas equipes mais dominantes da temporada garantiram vaga na final do maior torneio do ano. A decisão acontece no próximo final de semana.',date:n-9600,author:'BLAST',feedlabel:'Esports',url:'https://store.steampowered.com/news/app/730'},
+    {title:'Nova operação chegando: skins exclusivas e mapas inéditos vazam em update',contents:'Arquivos de atualização revelam uma nova operação com pelo menos 8 skins exclusivas e 3 mapas completamente novos para o modo competitivo.',date:n-14400,author:'Valve',feedlabel:'CS2 Updates',url:'https://store.steampowered.com/news/app/730'},
+    {title:'Mercado de skins: Butterfly Knife Fade atinge recorde histórico de preço',contents:'A faca mais cobiçada do CS2 atingiu seu maior valor desde o lançamento do jogo, impulsionada pela demanda crescente no mercado chinês.',date:n-21600,author:'Market',feedlabel:'Steam Community',url:'https://store.steampowered.com/news/app/730'},
+    {title:'VAC Live: Valve detalha novo sistema anti-cheat com machine learning',contents:'O sistema anti-cheat de última geração utiliza inteligência artificial para detectar comportamentos suspeitos em tempo real durante partidas competitivas.',date:n-28800,author:'Valve',feedlabel:'CS2 Updates',url:'https://store.steampowered.com/news/app/730'},
+    {title:'Patch 1.42: nerf na AWP, buff no Deagle e ajustes de spray na M4A1-S',contents:'O último balanceamento trouxe mudanças significativas nas armas mais populares, afetando o meta competitivo de forma substancial.',date:n-36000,author:'Valve',feedlabel:'CS2 Updates',url:'https://store.steampowered.com/news/app/730'},
+    {title:'FalleN monta super-equipe brasileira para temporada 2026 do CS2',contents:'O lendário capitão brasileiro anunciou uma formação inédita com jovens talentos e veteranos experientes para disputar os principais torneios internacionais.',date:n-43200,author:'Esports BR',feedlabel:'Esports',url:'https://store.steampowered.com/news/app/730'},
+    {title:'Guia: como otimizar FPS no CS2 — configurações ideais para competitivo',contents:'Especialistas compartilham as melhores configurações de vídeo, launch options e ajustes de sistema para maximizar performance em partidas ranqueadas.',date:n-50400,author:'Community',feedlabel:'Steam Community',url:'https://store.steampowered.com/news/app/730'},
+  ];
+}
+
 // ═══ LOAD NEWS ═══
 async function loadNews(){
   const feed=document.getElementById('newsFeed');
   let news=null;
 
-  // Try Steam API
   try{
-    const res=await fetch('https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=730&count=15&maxlength=200');
-    if(!res.ok) throw new Error('API error');
-    const data=await res.json();
-    news=data.appnews?.newsitems;
-  }catch(e){
-    // Try CORS proxy
+    const r=await fetch('https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=730&count=12&maxlength=200');
+    if(r.ok){const d=await r.json();news=d.appnews?.newsitems}
+  }catch(e){}
+
+  if(!news||!news.length){
     try{
-      const res=await fetch('https://corsproxy.io/?url='+encodeURIComponent('https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=730&count=15&maxlength=200'));
-      if(!res.ok) throw new Error('Proxy error');
-      const data=await res.json();
-      news=data.appnews?.newsitems;
-    }catch(e2){
-      // Use static fallback
-      news=staticNews();
-    }
+      const r=await fetch('https://corsproxy.io/?url='+encodeURIComponent('https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=730&count=12&maxlength=200'));
+      if(r.ok){const d=await r.json();news=d.appnews?.newsitems}
+    }catch(e){}
   }
 
-  if(!news||!news.length){news=staticNews()}
-  renderNews(news);
+  if(!news||!news.length) news=staticNews();
+  render(news);
 }
 
-function staticNews(){
-  const now=Math.floor(Date.now()/1000);
-  return[
-    {title:'CS2: Nova atualização traz melhorias de performance e correções de bugs',contents:'A Valve lançou mais uma atualização para o Counter-Strike 2 com foco em otimização de performance, correções de renderização e ajustes no sistema de matchmaking competitivo.',date:now-3600,author:'Valve',feedlabel:'CS2 Updates',url:'https://store.steampowered.com/news/app/730'},
-    {title:'Operação inédita chegando ao CS2 — novos mapas e skins exclusivas',contents:'Rumores indicam que a Valve está preparando uma nova operação com conteúdo exclusivo, incluindo mapas remasterizados e uma coleção de skins temáticas.',date:now-7200,author:'CS2 Team',feedlabel:'Steam Community',url:'https://store.steampowered.com/news/app/730'},
-    {title:'Mirage recebe visual update: texturas em alta resolução e nova iluminação',contents:'O mapa mais popular do CS2 ganhou uma atualização visual significativa com texturas refeitas em 4K e sistema de iluminação dinâmica atualizado.',date:now-14400,author:'Valve',feedlabel:'CS2 Updates',url:'https://store.steampowered.com/news/app/730'},
-    {title:'BLAST Premier 2026: confira os times classificados para a fase final',contents:'As equipes que garantiram vaga na fase final do BLAST Premier foram definidas após semanas intensas de competição.',date:now-21600,author:'BLAST',feedlabel:'Esports',url:'https://store.steampowered.com/news/app/730'},
-    {title:'Guia completo: como melhorar seu aim no CS2 em 2026',contents:'Especialistas compartilham técnicas avançadas de treino de mira, incluindo rotinas de prática e configurações ideais de sensibilidade.',date:now-28800,author:'Community',feedlabel:'Steam Community',url:'https://store.steampowered.com/news/app/730'},
-    {title:'Mercado de skins aquece: knives e luvas registram alta de 15% no mês',contents:'O mercado de skins do CS2 apresentou forte valorização no último mês, com destaque para facas e luvas que subiram em média 15%.',date:now-36000,author:'Market',feedlabel:'Steam Community',url:'https://store.steampowered.com/news/app/730'},
-    {title:'Novo sistema anti-cheat do CS2: como funciona o VAC Live',contents:'A Valve detalhou o funcionamento do VAC Live, o novo sistema anti-cheat em tempo real que utiliza machine learning para detectar trapaças.',date:now-43200,author:'Valve',feedlabel:'CS2 Updates',url:'https://store.steampowered.com/news/app/730'},
-    {title:'Patch notes: ajustes de balanceamento para AK-47, M4A1-S e AWP',contents:'O último patch trouxe mudanças significativas no balanceamento das armas mais populares do jogo, afetando padrões de spray e tempo de recarga.',date:now-50400,author:'Valve',feedlabel:'CS2 Updates',url:'https://store.steampowered.com/news/app/730'},
-    {title:'FalleN anuncia nova line-up para temporada 2026',contents:'O lendário jogador brasileiro revelou os novos integrantes de sua equipe para a próxima temporada competitiva do CS2.',date:now-57600,author:'Esports',feedlabel:'Steam Community',url:'https://store.steampowered.com/news/app/730'},
-  ];
-}
-
-function renderNews(news){
+function render(news){
   const feed=document.getElementById('newsFeed');
-  function timeAgo(ts){const d=Math.floor(Date.now()/1000-ts);if(d<3600)return Math.floor(d/60)+'min';if(d<86400)return Math.floor(d/3600)+'h';return Math.floor(d/86400)+'d'}
-  function clean(s){return(s||'').replace(/\[.*?\]/g,'').replace(/<[^>]*>/g,'').replace(/\{STEAM_CLAN_IMAGE\}[^\s]*/g,'').replace(/https?:\/\/[^\s]*/g,'').trim().substring(0,180)}
-  function getImg(item,i){
-    if(!item.contents)return csImages[i%csImages.length];
+  const timeAgo=ts=>{const d=Math.floor(Date.now()/1000-ts);if(d<3600)return Math.floor(d/60)+'min';if(d<86400)return Math.floor(d/3600)+'h';return Math.floor(d/86400)+'d'};
+  const clean=s=>(s||'').replace(/\[.*?\]/g,'').replace(/<[^>]*>/g,'').replace(/\{STEAM_CLAN_IMAGE\}[^\s]*/g,'').replace(/https?:\/\/[^\s]*/g,'').trim().substring(0,160);
+  const getImg=(item,i)=>{
+    if(!item.contents)return csImg[i%csImg.length];
     const m=item.contents.match(/https?:\/\/[^\s"'\]]+\.(jpg|jpeg|png|gif|webp)/i);
     if(m)return m[0];
     const c=item.contents.match(/\{STEAM_CLAN_IMAGE\}([^\s\[\]"]+)/);
     if(c)return'https://clan.cloudflare.steamstatic.com/images/'+c[1];
-    return csImages[i%csImages.length];
-  }
-  function getTag(item){
+    return csImg[i%csImg.length];
+  };
+  const getTag=item=>{
     const l=(item.feedlabel||'').toLowerCase(),a=(item.author||'').toLowerCase();
     if(a.includes('valve')||l.includes('update'))return{c:'tag-valve',t:'Valve'};
     if(l.includes('community')||l.includes('esport'))return{c:'tag-community',t:item.feedlabel||'Comunidade'};
     return{c:'tag-update',t:item.feedlabel||'CS2'};
-  }
+  };
 
-  let html='';
+  let h='<div class="sec-label">Destaque</div>';
+  const hero=news[0],ht=getTag(hero),hi=getImg(hero,0);
+  h+=`<a href="${hero.url}" target="_blank" class="news-hero reveal">
+    <img class="news-hero-img" src="${hi}" alt="" onerror="this.src='${csImg[0]}'">
+    <div class="news-hero-overlay"><div class="news-tag ${ht.c}">${ht.t}</div>
+    <h2>${hero.title}</h2>
+    <div class="news-meta"><span>${timeAgo(hero.date)} atrás</span><div class="meta-dot"></div><span>${hero.author||'Valve'}</span></div>
+  </div></a>`;
 
-  // HERO
-  const h=news[0],hTag=getTag(h),hImg=getImg(h,0);
-  html+=`<div class="sec-label">Destaque</div>
-  <a href="${h.url}" target="_blank" class="news-hero reveal">
-    <img class="news-hero-img" src="${hImg}" alt="" onerror="this.src='${csImages[0]}'">
-    <div class="news-hero-overlay">
-      <div class="news-tag ${hTag.c}">${hTag.t}</div>
-      <h2>${h.title}</h2>
-      <div class="news-meta"><span>${timeAgo(h.date)} atrás</span><div class="meta-dot"></div><span>${h.author||'Valve'}</span></div>
-    </div>
-  </a>`;
-
-  // GRID
-  html+='<div class="sec-label">Últimas Notícias</div><div class="news-grid">';
+  h+='<div class="sec-label">Últimas Notícias</div><div class="news-grid">';
   for(let i=1;i<news.length;i++){
-    const n=news[i],tag=getTag(n),img=getImg(n,i),txt=clean(n.contents);
-    html+=`<a href="${n.url}" target="_blank" class="news-card reveal">
-      <img class="news-card-img" src="${img}" alt="" onerror="this.src='${csImages[i%csImages.length]}'">
-      <div class="news-card-body">
-        <div class="news-tag ${tag.c}">${tag.t}</div>
-        <h3>${n.title}</h3>
-        <p>${txt}${txt.length>=180?'...':''}</p>
-        <div class="news-meta dark"><span>${timeAgo(n.date)} atrás</span><div class="meta-dot"></div><span>${n.author||'Valve'}</span></div>
-      </div>
-    </a>`;
+    const n=news[i],t=getTag(n),img=getImg(n,i),txt=clean(n.contents);
+    h+=`<a href="${n.url}" target="_blank" class="news-card reveal">
+      <img class="news-card-img" src="${img}" alt="" onerror="this.src='${csImg[i%csImg.length]}'">
+      <div class="news-card-body"><div class="news-tag ${t.c}">${t.t}</div>
+      <h3>${n.title}</h3><p>${txt}${txt.length>=160?'...':''}</p>
+      <div class="news-meta"><span>${timeAgo(n.date)} atrás</span><div class="meta-dot"></div><span>${n.author||'Valve'}</span></div>
+    </div></a>`;
   }
-  html+='</div>';
-
-  feed.innerHTML=html;
+  h+='</div>';
+  feed.innerHTML=h;
   document.querySelectorAll('.reveal:not(.visible)').forEach(el=>obs.observe(el));
 }
 
 loadNews();
 setInterval(loadNews,300000);
+
+// ═══ SCROLL PROGRESS ═══
+const bar=document.createElement('div');
+bar.style.cssText='position:fixed;top:33px;left:0;height:2px;z-index:10001;background:linear-gradient(90deg,#C4A97D,#D4A648);transition:width .1s;width:0';
+document.body.appendChild(bar);
+window.addEventListener('scroll',()=>{bar.style.width=(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%'});
 </script>
 
 </body>
