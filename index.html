@@ -240,111 +240,127 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 </footer>
 
 <script>
-// ═══ VEIN SYSTEM — Living Ecosystem ═══
+// ═══ VEIN SYSTEM — Organic flowing energy ═══
 const vc=document.getElementById('veinCanvas');
 const vx=vc.getContext('2d');
-const pillColors=['#22C55E','#A78BFA','#00D4AA','#F59E0B'];
-let veins=[];
-let bloodParticles=[];
+let tendrils=[];
 
 function setupVeins(){
   const wrap=document.getElementById('serviceWrap');
   const pills=wrap.querySelectorAll('.service-pill');
   const rect=wrap.getBoundingClientRect();
-  vc.width=(rect.width+80)*2;vc.height=120;
-  vc.style.width=(rect.width+80)+'px';vc.style.height='60px';
+  const w=rect.width+80,h=60;
+  vc.width=w*2;vc.height=h*2;
+  vc.style.width=w+'px';vc.style.height=h+'px';
   vx.scale(2,2);
-
-  veins=[];bloodParticles=[];
-  const cx=rect.width/2+40;
-  const hubY=52;
+  tendrils=[];
+  const hubX=w/2,hubY=h-6;
 
   pills.forEach((pill,i)=>{
     const pr=pill.getBoundingClientRect();
     const px=pr.left-rect.left+pr.width/2+40;
-    const py=pr.top-rect.top+pr.height+4;
-
-    // Create organic curve from pill to hub
-    const cp1x=px+(cx-px)*.3+(Math.random()-.5)*20;
-    const cp1y=py+12+Math.random()*8;
-    const cp2x=px+(cx-px)*.7+(Math.random()-.5)*20;
-    const cp2y=hubY-8+Math.random()*6;
-
-    veins.push({sx:px,sy:py,cp1x,cp1y,cp2x,cp2y,ex:cx,ey:hubY,color:pillColors[i],i});
-
-    // Blood particles per vein
-    for(let j=0;j<4;j++){
-      bloodParticles.push({
-        vein:i,t:Math.random(),speed:.003+Math.random()*.004,
-        size:1.5+Math.random()*1.5,glow:Math.random()>.5
+    const py=pr.top-rect.top+pr.height+2;
+    // Main tendril — asymmetric offsets
+    const offX=[(Math.random()-.5)*30,-15+Math.random()*10,20+Math.random()*15,(Math.random()-.5)*25][i];
+    const offY=[8+Math.random()*6,12+Math.random()*4,6+Math.random()*8,10+Math.random()*5][i];
+    tendrils.push({
+      sx:px,sy:py,
+      c1x:px+offX,c1y:py+offY,
+      c2x:hubX+(px-hubX)*.3+(Math.random()-.5)*20,c2y:hubY-10-Math.random()*8,
+      ex:hubX,ey:hubY,
+      phase:Math.random()*Math.PI*2,
+      speed:.008+Math.random()*.006,
+      thickness:1+Math.random()*.8
+    });
+    // Secondary thinner branch — organic split
+    if(Math.random()>.3){
+      const branchT=.3+Math.random()*.3;
+      const midX=px+(hubX-px)*branchT;
+      const midY=py+(hubY-py)*branchT+offY*.5;
+      const bEndX=midX+(Math.random()-.5)*40;
+      const bEndY=hubY-2+Math.random()*4;
+      tendrils.push({
+        sx:midX,sy:midY,
+        c1x:midX+(bEndX-midX)*.4+(Math.random()-.5)*10,c1y:midY+4+Math.random()*4,
+        c2x:bEndX-(bEndX-midX)*.2,c2y:bEndY-4,
+        ex:bEndX,ey:bEndY,
+        phase:Math.random()*Math.PI*2,
+        speed:.005+Math.random()*.005,
+        thickness:.5+Math.random()*.5,
+        isBranch:true
       });
     }
   });
 }
 
-function bezierPoint(t,sx,sy,cp1x,cp1y,cp2x,cp2y,ex,ey){
-  const u=1-t;
-  return{
-    x:u*u*u*sx+3*u*u*t*cp1x+3*u*t*t*cp2x+t*t*t*ex,
-    y:u*u*u*sy+3*u*u*t*cp1y+3*u*t*t*cp2y+t*t*t*ey
-  };
-}
-
-let veinFrame=0;
+let frame=0;
 function drawVeins(){
-  vx.clearRect(0,0,vc.width/2,vc.height/2);
-  veinFrame++;
+  const w=vc.width/2,h=vc.height/2;
+  vx.clearRect(0,0,w,h);
+  frame++;
 
-  // Draw veins (organic lines)
-  veins.forEach(v=>{
-    // Glow
-    vx.beginPath();
-    vx.moveTo(v.sx,v.sy);
-    vx.bezierCurveTo(v.cp1x,v.cp1y,v.cp2x,v.cp2y,v.ex,v.ey);
-    vx.strokeStyle=v.color;vx.globalAlpha=.06;vx.lineWidth=6;vx.lineCap='round';vx.stroke();
-    // Main line
-    vx.beginPath();
-    vx.moveTo(v.sx,v.sy);
-    vx.bezierCurveTo(v.cp1x,v.cp1y,v.cp2x,v.cp2y,v.ex,v.ey);
-    vx.strokeStyle=v.color;vx.globalAlpha=.2;vx.lineWidth=1.5;vx.stroke();
-    vx.globalAlpha=1;
-  });
+  tendrils.forEach(t=>{
+    const pulse=.3+.4*Math.sin(frame*t.speed+t.phase);
+    const pulse2=.2+.3*Math.sin(frame*t.speed*1.3+t.phase+1);
 
-  // Hub circle (center)
-  if(veins.length>0){
-    const hx=veins[0].ex,hy=veins[0].ey;
-    vx.beginPath();vx.arc(hx,hy,4,0,Math.PI*2);
-    const hubPulse=.4+.3*Math.sin(veinFrame*.03);
-    vx.fillStyle=`rgba(196,169,125,${hubPulse})`;vx.fill();
-    vx.beginPath();vx.arc(hx,hy,8,0,Math.PI*2);
-    vx.fillStyle=`rgba(196,169,125,${hubPulse*.2})`;vx.fill();
-  }
+    // Draw flowing energy along path using gradient
+    const steps=40;
+    for(let s=0;s<steps;s++){
+      const frac=s/steps;
+      const u=1-frac;
+      const x=u*u*u*t.sx+3*u*u*frac*t.c1x+3*u*frac*frac*t.c2x+frac*frac*frac*t.ex;
+      const y=u*u*u*t.sy+3*u*u*frac*t.c1y+3*u*frac*frac*t.c2y+frac*frac*frac*t.ey;
 
-  // Blood particles flowing
-  bloodParticles.forEach(bp=>{
-    bp.t+=bp.speed;
-    if(bp.t>1)bp.t=0;
-    const v=veins[bp.vein];if(!v)return;
-    // Flow from pill → hub, then reverse
-    const flowT=bp.t<.5?bp.t*2:2-bp.t*2;
-    const pt=bezierPoint(flowT,v.sx,v.sy,v.cp1x,v.cp1y,v.cp2x,v.cp2y,v.ex,v.ey);
+      // Flowing energy wave — moves along the path over time
+      const wave=Math.sin(frac*8-frame*.02+t.phase);
+      const wave2=Math.sin(frac*5-frame*.015+t.phase+2);
+      const energy=Math.max(0,wave*.5+.5)*pulse;
+      const energy2=Math.max(0,wave2*.5+.5)*pulse2;
 
-    // Glow
-    if(bp.glow){
-      vx.beginPath();vx.arc(pt.x,pt.y,bp.size*3,0,Math.PI*2);
-      vx.fillStyle=v.color;vx.globalAlpha=.1;vx.fill();
+      // Outer soft glow
+      const glowSize=t.thickness*3+energy*4;
+      vx.beginPath();vx.arc(x,y,glowSize,0,Math.PI*2);
+      vx.fillStyle=`rgba(180,155,110,${.02*energy})`;vx.fill();
+
+      // Inner warm glow
+      const innerSize=t.thickness*1.5+energy2*2;
+      vx.beginPath();vx.arc(x,y,innerSize,0,Math.PI*2);
+      vx.fillStyle=`rgba(196,169,125,${.04+.06*energy})`;vx.fill();
+
+      // Core bright point — only where energy peaks
+      if(energy>.3){
+        const coreSize=t.thickness*.6+energy*.8;
+        vx.beginPath();vx.arc(x,y,coreSize,0,Math.PI*2);
+        vx.fillStyle=`rgba(212,188,148,${.08+.12*energy})`;vx.fill();
+      }
     }
-    // Particle
-    vx.beginPath();vx.arc(pt.x,pt.y,bp.size,0,Math.PI*2);
-    vx.fillStyle=v.color;vx.globalAlpha=.7+.3*Math.sin(veinFrame*.05+bp.t*10);vx.fill();
-    vx.globalAlpha=1;
+
+    // Thin structural line
+    vx.beginPath();
+    vx.moveTo(t.sx,t.sy);
+    vx.bezierCurveTo(t.c1x,t.c1y,t.c2x,t.c2y,t.ex,t.ey);
+    vx.strokeStyle=`rgba(196,169,125,${.06+.04*pulse})`;
+    vx.lineWidth=t.thickness*.7;
+    vx.lineCap='round';vx.stroke();
   });
+
+  // Hub — subtle warm glow at convergence
+  if(tendrils.length>0){
+    const hx=tendrils[0].ex,hy=tendrils[0].ey;
+    const hPulse=.4+.4*Math.sin(frame*.012);
+    vx.beginPath();vx.arc(hx,hy,12,0,Math.PI*2);
+    vx.fillStyle=`rgba(196,169,125,${.03*hPulse})`;vx.fill();
+    vx.beginPath();vx.arc(hx,hy,5,0,Math.PI*2);
+    vx.fillStyle=`rgba(212,188,148,${.06*hPulse})`;vx.fill();
+    vx.beginPath();vx.arc(hx,hy,2,0,Math.PI*2);
+    vx.fillStyle=`rgba(232,213,176,${.1*hPulse})`;vx.fill();
+  }
 
   requestAnimationFrame(drawVeins);
 }
 
 setTimeout(()=>{setupVeins();drawVeins()},100);
-window.addEventListener('resize',()=>{setTimeout(setupVeins,200)});
+addEventListener('resize',()=>{setTimeout(setupVeins,200)});
 
 // ═══ SAND PARTICLES ═══
 const cv=document.getElementById('sandCanvas'),cx=cv.getContext('2d');let sp=[];
